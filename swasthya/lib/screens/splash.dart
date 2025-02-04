@@ -1,0 +1,49 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'authentication/choose.dart';
+
+class Splash extends StatelessWidget {
+  const Splash({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    // Add a Future.delayed to navigate after 3 seconds
+    Future.delayed(const Duration(seconds: 3), () {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => Choose()), // Your home screen widget
+      );
+    });
+
+    return Scaffold(
+      body: Container(
+        color: const Color.fromARGB(255, 221, 81, 158),
+        child: const Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                'SWASTHYA',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 50,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              SizedBox(height: 10),
+              Text(
+                "A Doctor Appointment Application",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 16,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+

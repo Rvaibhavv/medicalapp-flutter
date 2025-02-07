@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:swasthya/screens/authentication/terms.dart';
 import 'package:swasthya/screens/authentication/privacy.dart';
-
+import 'package:swasthya/screens/bottomnav.dart';
+import 'package:swasthya/screens/authentication/signin1.dart';
 class Choose extends StatefulWidget {
   const Choose({super.key});
 
@@ -49,7 +50,14 @@ class _ChooseState extends State<Choose> {
                 height: 60,
                 width: 350, // Increased width
                 child: MaterialButton(
-                  onPressed: () {},
+                   onPressed: () {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  SignIn1Screen()), // Your home screen widget
+                        );
+                      },
                   color: Colors.white, // Button background is white
                   padding: const EdgeInsets.symmetric(vertical: 15),
                   shape: RoundedRectangleBorder(
@@ -73,7 +81,15 @@ class _ChooseState extends State<Choose> {
                 height: 60,
                 width: 350, // Increased width
                 child: MaterialButton(
-                  onPressed: () {},
+                  onPressed: () {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  BottomNavScreen()), // Your home screen widget
+                        );
+                    
+                  },
                   color: Colors.white, // Button background is white
                   padding: const EdgeInsets.symmetric(vertical: 15),
                   shape: RoundedRectangleBorder(

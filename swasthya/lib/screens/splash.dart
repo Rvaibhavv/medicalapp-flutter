@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'authentication/choose.dart';
-
+import 'mycolors.dart';
 class Splash extends StatelessWidget {
   const Splash({super.key});
 
@@ -17,7 +17,7 @@ class Splash extends StatelessWidget {
 
     return Scaffold(
       body: Container(
-        color: const Color.fromARGB(255, 221, 81, 158),
+        color: MyColors.maincolor,
         child: const Center(
           child: Column(
             mainAxisSize: MainAxisSize.min,

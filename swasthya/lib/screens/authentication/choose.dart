@@ -3,6 +3,7 @@ import 'package:swasthya/screens/authentication/terms.dart';
 import 'package:swasthya/screens/authentication/privacy.dart';
 import 'package:swasthya/screens/bottomnav.dart';
 import 'package:swasthya/screens/authentication/signin1.dart';
+import 'package:swasthya/screens/mycolors.dart';
 class Choose extends StatefulWidget {
   const Choose({super.key});
 
@@ -12,7 +13,7 @@ class Choose extends StatefulWidget {
 
 class _ChooseState extends State<Choose> {
   final Color buttonTextColor =
-      const Color.fromARGB(255, 255, 169, 209); // Pink color
+      MyColors.softTeal; 
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +28,7 @@ class _ChooseState extends State<Choose> {
               Text(
                 "SWASTHYA", // App name
                 style: TextStyle(
-                  color: const Color.fromARGB(255, 255, 169, 209), // Text color
+                  color: buttonTextColor, // Text color
                   fontSize: 50,
                   fontWeight: FontWeight.bold,
                   shadows: [
@@ -51,7 +52,7 @@ class _ChooseState extends State<Choose> {
                 width: 350, // Increased width
                 child: MaterialButton(
                    onPressed: () {
-                        Navigator.pushReplacement(
+                        Navigator.push(
                           context,
                           MaterialPageRoute(
                               builder: (context) =>
@@ -82,11 +83,12 @@ class _ChooseState extends State<Choose> {
                 width: 350, // Increased width
                 child: MaterialButton(
                   onPressed: () {
-                        Navigator.pushReplacement(
+                        Navigator.push(
                           context,
                           MaterialPageRoute(
                               builder: (context) =>
                                   BottomNavScreen()), // Your home screen widget
+                                  
                         );
                     
                   },
@@ -131,8 +133,7 @@ class _ChooseState extends State<Choose> {
                         style: TextStyle(
                           fontSize: 10,
                           fontWeight: FontWeight.w900,
-                          color: Color.fromARGB(
-                              255, 255, 169, 209), // Clickable text color
+                          color:Color(0xFF2E7A79), // Clickable text color
                           // Underline to indicate link
                         ),
                       ),
@@ -162,7 +163,7 @@ class _ChooseState extends State<Choose> {
                         style: TextStyle(
                           fontSize: 10,
                           fontWeight: FontWeight.w900,
-                          color: Color.fromARGB(255, 255, 169, 209),
+                          color: Color(0xFF2E7A79),
                         ),
                       ),
                     ),

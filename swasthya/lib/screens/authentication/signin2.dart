@@ -93,7 +93,8 @@ class _SignIn2ScreenState extends State<SignIn2Screen> {
                   decoration: const BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.only(
-                      topRight: Radius.circular(100),
+                      topRight: Radius.circular(50),
+                      topLeft: Radius.circular(50),
                     ),
                   ),
                   padding: const EdgeInsets.all(16.0),

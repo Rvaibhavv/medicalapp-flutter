@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import '../mycolors.dart';
 class Timepicker extends StatefulWidget {
   const Timepicker({super.key});
 
@@ -8,8 +8,7 @@ class Timepicker extends StatefulWidget {
 }
 
 class _TimepickerState extends State<Timepicker> {
-  final  ContainerColor = const
-      Color.fromARGB(255, 255, 158, 204); // Define the border color
+  final  ContainerColor = MyColors.maincolor; // Define the border color
   int? selectedIndex; // State to keep track of the selected container
   String? selectedTime; // Variable to store the selected time
 
@@ -82,7 +81,7 @@ class _TimepickerState extends State<Timepicker> {
                   // Navigate to Paymentgateway after popping
                   
                 },
-                color: const Color.fromARGB(255, 255, 158, 204),
+                color: ContainerColor,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(40), // Curved border
                 ),

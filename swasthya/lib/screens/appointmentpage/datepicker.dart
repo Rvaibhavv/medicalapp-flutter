@@ -1,6 +1,6 @@
 // datepicker.dart
 import 'package:flutter/material.dart';
-
+import '../mycolors.dart';
 Future<DateTime?> showCustomDatePicker(BuildContext context) async {
   return await showDatePicker(
     context: context,
@@ -16,7 +16,7 @@ Future<DateTime?> showCustomDatePicker(BuildContext context) async {
             bodyLarge: TextStyle(color: Colors.black),
           ),
           colorScheme: const ColorScheme.light(
-            primary: Color.fromARGB(255, 255, 158, 204),
+            primary: MyColors.maincolor,
             onPrimary: Colors.white,
             onSurface: Colors.black,
           ),

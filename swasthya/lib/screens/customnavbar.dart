@@ -11,7 +11,7 @@ class CustomNavBar extends StatelessWidget {
     return Container(
       height: 100, // Height of the navbar
       padding:const EdgeInsets.only(top: 40,bottom :10,left:13), // Adjust for status bar height
-      color: MyColors.darkPink, // Background color of the navbar
+      color: MyColors.maincolor, // Background color of the navbar
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,  // To space out the title and actions
         children: [

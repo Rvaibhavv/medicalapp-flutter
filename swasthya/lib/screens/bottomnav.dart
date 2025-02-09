@@ -4,6 +4,7 @@ import 'search.dart';
 import 'Profile.dart';
 import 'settings.dart';
 import 'appointmentpage/appointment.dart';
+import 'mycolors.dart';
 
 class BottomNavScreen extends StatefulWidget {
   @override
@@ -33,6 +34,7 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
           BottomNavigationBar(
             type: BottomNavigationBarType.fixed,
             currentIndex: _currentIndex,
+            backgroundColor: Colors.white, // Set background color to white
             onTap: (index) {
               setState(() {
                 if (index != 2) {
@@ -63,13 +65,10 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
                 label: 'Settings',
               ),
             ],
-            selectedItemColor: const Color.fromARGB(255, 221, 81, 158),
+            selectedItemColor: MyColors.maincolor,
             unselectedItemColor: Colors.black,
             showUnselectedLabels: true,
           ),
-         
-         
-         
           Positioned(
             bottom: 25, // Adjust the position to make the icon bulge upwards
             left: MediaQuery.of(context).size.width / 2 - 35, // Center the icon
@@ -88,7 +87,7 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
                   color: Colors.white,
                   border: Border.all(
                     color: _isCenterButtonSelected
-                        ? const Color.fromARGB(255, 221, 81, 158) // Border color when selected
+                        ? MyColors.maincolor // Border color when selected
                         : Colors.transparent, // No border when not selected
                     width: 1.8,
                   ),
@@ -103,7 +102,7 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
                 child: Icon(
                   Icons.add, // Hollow plus icon
                   size: 40,
-                  color: const Color.fromARGB(255, 221, 81, 158),
+                  color: MyColors.maincolor,
                 ),
               ),
             ),

@@ -22,7 +22,7 @@ class DoctorInfoBottomSheet extends StatelessWidget {
             child: Text(
               doctor['name'],
               style: const TextStyle(
-                color: MyColors.darkPink,
+                color: MyColors.maincolor,
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
               ),

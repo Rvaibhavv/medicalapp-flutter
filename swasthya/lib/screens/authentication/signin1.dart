@@ -43,6 +43,26 @@ class SignIn1ScreenState extends State<SignIn1Screen> {
       initialDate: DateTime.now(),
       firstDate: DateTime(1900),
       lastDate: DateTime.now(),
+      builder: (BuildContext context, Widget? child) {
+      return Theme(
+        data: ThemeData(
+          primarySwatch: Colors.blue,
+          dialogBackgroundColor: Colors.white,
+          textTheme: const TextTheme(
+            bodyLarge: TextStyle(color: Colors.black),
+          ),
+          colorScheme: const ColorScheme.light(
+            primary: MyColors.maincolor,
+            onPrimary: Colors.white,
+            onSurface: Colors.black,
+          ),
+          buttonTheme:const ButtonThemeData(
+            textTheme: ButtonTextTheme.primary,
+          ),
+        ),
+        child: child!,
+      );
+    },
     );
     if (picked != null) {
       setState(() {
@@ -102,7 +122,8 @@ class SignIn1ScreenState extends State<SignIn1Screen> {
                   top: BorderSide(color: primaryColor, width: 1),
                 ),
                 borderRadius: BorderRadius.only(
-                  topRight: Radius.circular(100),
+                  topRight: Radius.circular(50),
+                      topLeft: Radius.circular(50),
                 ),
               ),
               padding:

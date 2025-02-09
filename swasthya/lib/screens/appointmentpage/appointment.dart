@@ -63,7 +63,7 @@ class _AppointmentPageState extends State<AppointmentPage> {
               return AlertDialog(
                 title: const Text(
                   'No Time Selected',
-                  style: TextStyle(color: MyColors.darkPink),
+                  style: TextStyle(color: MyColors.maincolor),
                 ),
                 content: const Text('Please select a time to proceed.'),
                 actions: <Widget>[
@@ -118,7 +118,7 @@ class _AppointmentPageState extends State<AppointmentPage> {
             return AlertDialog(
               title: const Text(
                 'No Time Selected',
-                style: TextStyle(color: Colors.red),
+                style: TextStyle(color: MyColors.maincolor),
               ),
               content: const Text('Please select a time to proceed.'),
               actions: <Widget>[
@@ -149,7 +149,7 @@ class _AppointmentPageState extends State<AppointmentPage> {
   Future<void> fetchDoctors() async {
     try {
       final response = await http
-          .get(Uri.parse('http://10.55.224.113:8000/docAppoint/doctorlist'));
+          .get(Uri.parse('http://192.168.0.106:8000/docAppoint/doctorlist'));
       print('Response status: ${response.statusCode}');
 
       if (response.statusCode == 200) {
@@ -190,8 +190,7 @@ class _AppointmentPageState extends State<AppointmentPage> {
                         decoration:const BoxDecoration(
                           border: Border(
                             bottom: BorderSide(
-                              color: Color.fromARGB(
-                                  255, 255, 158, 204), // Border color
+                              color: MyColors.maincolor, // Border color
                               width: 1.8,
                             ),
                           ),
@@ -202,7 +201,7 @@ class _AppointmentPageState extends State<AppointmentPage> {
                           style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
-                            color: Color.fromARGB(255, 255, 158, 204),
+                            color: MyColors.maincolor,
                           ),
                         ),
                       ),
@@ -213,7 +212,7 @@ class _AppointmentPageState extends State<AppointmentPage> {
             ),
             Container(
               height: 0.1,
-              color: const Color.fromARGB(255, 255, 158, 204),
+              color: Colors.grey,
             ),
             Expanded(
               flex: 9,
@@ -239,7 +238,7 @@ class _AppointmentPageState extends State<AppointmentPage> {
                         width: double.infinity,
                         decoration: BoxDecoration(
                           border: Border.all(
-                            color:const Color.fromARGB(255, 255, 158, 204),
+                            color:MyColors.deepMutedTeal,
                             width: 1.8,
                           ),
                           borderRadius: BorderRadius.circular(25),
@@ -311,7 +310,7 @@ class _AppointmentPageState extends State<AppointmentPage> {
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 15, vertical: 10),
                                     decoration: BoxDecoration(
-                                      color: Color.fromARGB(255, 255, 158, 204),
+                                      color: MyColors.deepMutedTeal,
                                       borderRadius: BorderRadius.circular(20),
                                     ),
                                     child:const Text(
@@ -333,10 +332,10 @@ class _AppointmentPageState extends State<AppointmentPage> {
                               child: MaterialButton(
                                 onPressed: () =>
                                     _showDatePicker(doctor['name']),
-                                color: const Color.fromARGB(255, 255, 158, 204),
+                                color: MyColors.deepMutedTeal,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(
-                                      40), // Curved border
+                                      18), // Curved border
                                 ),
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 31,

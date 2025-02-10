@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
         fontFamily: 'Poppins',
       ),
       title: 'Medical APP',
-            home: Splash(), // Start with the HomeScreen
+            home: const Splash(), // Start with the HomeScreen
     );
   }
 }

@@ -49,20 +49,21 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
                 label: 'Home',
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.search),
-                label: 'Search',
+                icon: Icon(Icons.medication_outlined),
+                label: 'Pharmacy',
               ),
               BottomNavigationBarItem(
                 icon: SizedBox.shrink(), // Placeholder for the bulged icon
                 label: '',
               ),
+              
+              BottomNavigationBarItem(
+                icon: Icon(Icons.medical_information_outlined),
+                label: 'Diagnostics',
+              ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.person_2_outlined),
                 label: 'Profile',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.settings_outlined),
-                label: 'Settings',
               ),
             ],
             selectedItemColor: MyColors.maincolor,

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'authentication/choose.dart';
 import 'mycolors.dart';
 class Splash extends StatelessWidget {
@@ -11,7 +10,7 @@ class Splash extends StatelessWidget {
     Future.delayed(const Duration(seconds: 3), () {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => Choose()), // Your home screen widget
+        MaterialPageRoute(builder: (context) => const Choose()), // Your home screen widget
       );
     });
 

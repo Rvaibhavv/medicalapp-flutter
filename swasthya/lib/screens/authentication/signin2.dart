@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:swasthya/screens/mycolors.dart';
 import '../bottomnav.dart';
-
+import '../../config.dart';  
 const Color primaryColor = MyColors.maincolor;
 
 class SignIn2Screen extends StatefulWidget {
@@ -32,7 +32,7 @@ class _SignIn2ScreenState extends State<SignIn2Screen> {
   Future<void> _completeRegistration() async {
     if (!_formKey.currentState!.validate()) return;
 
-    final url = Uri.parse('http://10.55.5.215:8000/api/register/');
+    final url = Uri.parse('${AppConfig.baseUrl}/api/register/');
     final response = await http.post(
       url,
       headers: {"Content-Type": "application/json"},

@@ -3,9 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:swasthya/screens/mycolors.dart';
 import 'signin2.dart';
 
-
 // Define a common color variable
-const Color primaryColor =MyColors.maincolor;
+const Color primaryColor = MyColors.maincolor;
 
 class SignIn1Screen extends StatefulWidget {
   const SignIn1Screen({super.key});
@@ -44,25 +43,25 @@ class SignIn1ScreenState extends State<SignIn1Screen> {
       firstDate: DateTime(1900),
       lastDate: DateTime.now(),
       builder: (BuildContext context, Widget? child) {
-      return Theme(
-        data: ThemeData(
-          primarySwatch: Colors.blue,
-          dialogBackgroundColor: Colors.white,
-          textTheme: const TextTheme(
-            bodyLarge: TextStyle(color: Colors.black),
+        return Theme(
+          data: ThemeData(
+            primarySwatch: Colors.blue,
+            dialogBackgroundColor: Colors.white,
+            textTheme: const TextTheme(
+              bodyLarge: TextStyle(color: Colors.black),
+            ),
+            colorScheme: const ColorScheme.light(
+              primary: MyColors.maincolor,
+              onPrimary: Colors.white,
+              onSurface: Colors.black,
+            ),
+            buttonTheme: const ButtonThemeData(
+              textTheme: ButtonTextTheme.primary,
+            ),
           ),
-          colorScheme: const ColorScheme.light(
-            primary: MyColors.maincolor,
-            onPrimary: Colors.white,
-            onSurface: Colors.black,
-          ),
-          buttonTheme:const ButtonThemeData(
-            textTheme: ButtonTextTheme.primary,
-          ),
-        ),
-        child: child!,
-      );
-    },
+          child: child!,
+        );
+      },
     );
     if (picked != null) {
       setState(() {
@@ -77,42 +76,40 @@ class SignIn1ScreenState extends State<SignIn1Screen> {
       backgroundColor: primaryColor,
       body: Column(
         children: [
-         Expanded(
-                flex: 3,
-                child: Container(
-                  color: primaryColor,
-                  padding: const EdgeInsets.only(
-                      left: 20, bottom: 20), // Adjust padding as needed
-                  child: const Align(
-                    alignment: Alignment.centerLeft,
-                    child: Column(
-                      mainAxisSize: MainAxisSize
-                          .min, // Keeps it at the bottom instead of taking full space
-                      crossAxisAlignment:
-                          CrossAxisAlignment.start, // Aligns text to the left
-                      children: const [
-                        Text(
-                          'Sign Up',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 35,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-
-                        Text(
-                          'Welcome to the world where health matters!',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 12, // Adjust size as needed
-                          ),
-                        ),
-                        
-                      ],
+          Expanded(
+            flex: 3,
+            child: Container(
+              color: primaryColor,
+              padding: const EdgeInsets.only(
+                  left: 20, bottom: 20), // Adjust padding as needed
+              child: const Align(
+                alignment: Alignment.centerLeft,
+                child: Column(
+                  mainAxisSize: MainAxisSize
+                      .min, // Keeps it at the bottom instead of taking full space
+                  crossAxisAlignment:
+                      CrossAxisAlignment.start, // Aligns text to the left
+                  children: const [
+                    Text(
+                      'Sign Up',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 35,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  ),
+                    Text(
+                      'Welcome to the world where health matters!',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 12, // Adjust size as needed
+                      ),
+                    ),
+                  ],
                 ),
               ),
+            ),
+          ),
           Expanded(
             flex: 9,
             child: Container(
@@ -123,7 +120,7 @@ class SignIn1ScreenState extends State<SignIn1Screen> {
                 ),
                 borderRadius: BorderRadius.only(
                   topRight: Radius.circular(50),
-                      topLeft: Radius.circular(50),
+                  topLeft: Radius.circular(50),
                 ),
               ),
               padding:
@@ -229,7 +226,9 @@ class SignIn1ScreenState extends State<SignIn1Screen> {
                         backgroundColor: primaryColor,
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12)),
-                        padding: const EdgeInsets.symmetric(vertical: 14,),
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 14,
+                        ),
                       ),
                       child: const Text('Next',
                           style: TextStyle(

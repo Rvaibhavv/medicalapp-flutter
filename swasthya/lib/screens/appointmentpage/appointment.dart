@@ -6,6 +6,7 @@ import 'doctorbottom.dart';
 import 'timepicker.dart';
 import 'paymentgateway.dart';
 import '../mycolors.dart';
+import '../../config.dart';
 
 class AppointmentPage extends StatefulWidget {
   const AppointmentPage({super.key});
@@ -149,7 +150,7 @@ class _AppointmentPageState extends State<AppointmentPage> {
   Future<void> fetchDoctors() async {
     try {
       final response = await http
-          .get(Uri.parse('http://10.55.5.215:8000/docAppoint/doctorlist'));
+          .get(Uri.parse('${AppConfig.baseUrl}/docAppoint/doctorlist'));
       print('Response status: ${response.statusCode}');
 
       if (response.statusCode == 200) {
@@ -158,6 +159,8 @@ class _AppointmentPageState extends State<AppointmentPage> {
           isLoading = false;
         });
       } else {
+
+        
         setState(() {
           errorMessage = 'Failed to load doctors. Please try again later.';
           isLoading = false;

@@ -8,7 +8,7 @@ class Timepicker extends StatefulWidget {
 }
 
 class _TimepickerState extends State<Timepicker> {
-  final borderColor = Color.fromARGB(255, 255, 158, 204);  // Define the border color
+  final borderColor = const Color.fromARGB(255, 255, 158, 204);  // Define the border color
   int? selectedIndex;  // State to keep track of the selected container
   String? selectedTime;  // Variable to store the selected time
 
@@ -16,8 +16,8 @@ class _TimepickerState extends State<Timepicker> {
   Widget build(BuildContext context) {
     return Container(
       height: MediaQuery.of(context).size.height * 0.5,
-      padding: EdgeInsets.all(20),  // Add padding inside the container
-      decoration: BoxDecoration(
+      padding: const EdgeInsets.all(20),  // Add padding inside the container
+      decoration: const BoxDecoration(
         color: Colors.white,  // Set the background color of the container to white
         borderRadius: BorderRadius.vertical(top: Radius.circular(25)),
       ),
@@ -25,7 +25,7 @@ class _TimepickerState extends State<Timepicker> {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Text("Morning", style: TextStyle(fontSize: 20)),
+          const Text("Morning", style: TextStyle(fontSize: 20)),
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
@@ -34,9 +34,9 @@ class _TimepickerState extends State<Timepicker> {
               buildContainer(2, "12:00 PM"),
             ],
           ),
-          SizedBox(height: 5),  // Space between rows
+          const SizedBox(height: 5),  // Space between rows
 
-          Text("Afternoon", style: TextStyle(fontSize: 20)),
+          const Text("Afternoon", style: TextStyle(fontSize: 20)),
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
@@ -45,7 +45,7 @@ class _TimepickerState extends State<Timepicker> {
               buildContainer(5, "3:00 PM"),
             ],
           ),
-          SizedBox(height: 5),  // Space between rows
+          const SizedBox(height: 5),  // Space between rows
 
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -53,9 +53,9 @@ class _TimepickerState extends State<Timepicker> {
               buildContainer(6, "4:00 PM"),
             ],
           ),
-          SizedBox(height: 5),  // Space between rows
+          const SizedBox(height: 5),  // Space between rows
 
-          Text("Evening", style: TextStyle(fontSize: 20)),
+          const Text("Evening", style: TextStyle(fontSize: 20)),
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
@@ -63,7 +63,7 @@ class _TimepickerState extends State<Timepicker> {
               buildContainer(8, "6:00 PM"),
             ],
           ),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
 
           // Row to align the button to the right
           Row(
@@ -78,12 +78,12 @@ class _TimepickerState extends State<Timepicker> {
                   }
                   Navigator.pop(context);
                 },
-                color: Color.fromARGB(255, 255, 158, 204),
+                color: const Color.fromARGB(255, 255, 158, 204),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(40), // Curved border
                 ),
-                padding: EdgeInsets.symmetric(horizontal: 31, vertical: 10), // Adjust size
-                child: Text(
+                padding: const EdgeInsets.symmetric(horizontal: 31, vertical: 10), // Adjust size
+                child: const Text(
                   "Continue",
                   style: TextStyle(
                     fontSize: 20,
@@ -111,7 +111,7 @@ class _TimepickerState extends State<Timepicker> {
       child: Container(
         width: 100,
         height: 55,
-        margin: EdgeInsets.only(right: 14),  // Spacing between boxes
+        margin: const EdgeInsets.only(right: 14),  // Spacing between boxes
         decoration: BoxDecoration(
           color: isSelected ? borderColor : Colors.white,
           borderRadius: BorderRadius.circular(10),

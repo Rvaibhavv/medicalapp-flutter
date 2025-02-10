@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:swasthya/screens/authentication/terms.dart';
 import 'package:swasthya/screens/authentication/privacy.dart';
-import 'package:swasthya/screens/bottomnav.dart';
 import 'package:swasthya/screens/authentication/signin1.dart';
+import 'package:swasthya/screens/authentication/login.dart';
 import 'package:swasthya/screens/mycolors.dart';
 class Choose extends StatefulWidget {
   const Choose({super.key});
@@ -87,7 +87,7 @@ class _ChooseState extends State<Choose> {
                           context,
                           MaterialPageRoute(
                               builder: (context) =>
-                                  BottomNavScreen()), // Your home screen widget
+                                  LoginScreen()), // Your home screen widget
                                   
                         );
                     

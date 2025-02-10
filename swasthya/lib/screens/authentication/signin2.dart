@@ -1,5 +1,8 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:swasthya/screens/mycolors.dart';
+import '../bottomnav.dart';
 
 const Color primaryColor = MyColors.maincolor;
 
@@ -26,17 +29,36 @@ class _SignIn2ScreenState extends State<SignIn2Screen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-  void _completeRegistration() {
-    if (_formKey.currentState!.validate()) {
-      print('Name: ${widget.name}');
-      print('DOB: ${widget.dob}');
-      print('Gender: ${widget.gender}');
-      print('Phone: ${widget.phone}');
-      print('Email: ${_emailController.text}');
-      print('Password: ${_passwordController.text}');
+  Future<void> _completeRegistration() async {
+    if (!_formKey.currentState!.validate()) return;
+
+    final url = Uri.parse('http://10.55.5.215:8000/api/register/');
+    final response = await http.post(
+      url,
+      headers: {"Content-Type": "application/json"},
+      body: jsonEncode({
+        'name': widget.name,
+        'dob': widget.dob,
+        'gender': widget.gender,
+        'phone': widget.phone,
+        'email': _emailController.text,
+        'password': _passwordController.text,
+      }),
+    );
+
+    if (response.statusCode == 201) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => BottomNavScreen()),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error: ${jsonDecode(response.body)['error']}')),
+      );
     }
   }
 
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -149,7 +149,7 @@ class _AppointmentPageState extends State<AppointmentPage> {
   Future<void> fetchDoctors() async {
     try {
       final response = await http
-          .get(Uri.parse('http://192.168.0.106:8000/docAppoint/doctorlist'));
+          .get(Uri.parse('http://10.55.5.215:8000/docAppoint/doctorlist'));
       print('Response status: ${response.statusCode}');
 
       if (response.statusCode == 200) {

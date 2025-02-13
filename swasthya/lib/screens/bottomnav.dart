@@ -6,14 +6,18 @@ import 'settings.dart';
 import 'appointmentpage/appointment.dart';
 import 'mycolors.dart';
 
+
 class BottomNavScreen extends StatefulWidget {
+  
+
   @override
   _BottomNavScreenState createState() => _BottomNavScreenState();
 }
 
 class _BottomNavScreenState extends State<BottomNavScreen> {
   int _currentIndex = 0; // Tracks the selected tab
-  bool _isCenterButtonSelected = false; // Tracks whether the center button is selected
+  bool _isCenterButtonSelected =
+      false; // Tracks whether the center button is selected
 
   final List<Widget> _pages = [
     HomePage(), // Index 0
@@ -21,7 +25,7 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
     AppointmentPage(),
     ProfilePage(), // Index 3
     SettingsPage(), // Index 4
-     // Index 5 (for the center button)
+    // Index 5 (for the center button)
   ];
 
   @override
@@ -39,7 +43,8 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
               setState(() {
                 if (index != 2) {
                   _currentIndex = index;
-                  _isCenterButtonSelected = false; // Reset center button state when tapping non-center
+                  _isCenterButtonSelected =
+                      false; // Reset center button state when tapping non-center
                 }
               });
             },
@@ -56,14 +61,13 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
                 icon: SizedBox.shrink(), // Placeholder for the bulged icon
                 label: '',
               ),
-              
               BottomNavigationBarItem(
                 icon: Icon(Icons.medical_information_outlined),
                 label: 'Diagnostics',
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.person_2_outlined),
-                label: 'Profile',
+                icon: Icon(Icons.medical_services_outlined), // Outlined ambulance icon
+                label: 'Ambulance',
               ),
             ],
             selectedItemColor: MyColors.maincolor,
@@ -76,8 +80,10 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
             child: GestureDetector(
               onTap: () {
                 setState(() {
-                  _currentIndex = 2; // Set index for the center button to AppointmentPage
-                  _isCenterButtonSelected = !_isCenterButtonSelected; // Toggle the selected state
+                  _currentIndex =
+                      2; // Set index for the center button to AppointmentPage
+                  _isCenterButtonSelected =
+                      !_isCenterButtonSelected; // Toggle the selected state
                 });
               },
               child: Container(

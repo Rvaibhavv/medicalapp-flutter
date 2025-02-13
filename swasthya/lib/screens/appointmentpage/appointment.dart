@@ -159,8 +159,6 @@ class _AppointmentPageState extends State<AppointmentPage> {
           isLoading = false;
         });
       } else {
-
-        
         setState(() {
           errorMessage = 'Failed to load doctors. Please try again later.';
           isLoading = false;
@@ -172,194 +170,234 @@ class _AppointmentPageState extends State<AppointmentPage> {
         isLoading = false;
       });
     }
-}
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: MyColors.maincolor,
       body: SafeArea(
         child: Column(
           children: [
             Expanded(
-              flex: 1,
+              flex: 2,
               child: Container(
+                color: MyColors.maincolor,
                 width: double.infinity,
-                child: Center(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        decoration:const BoxDecoration(
-                          border: Border(
-                            bottom: BorderSide(
-                              color: MyColors.maincolor, // Border color
-                              width: 1.8,
-                            ),
-                          ),
-                        ),
-                        padding:const EdgeInsets.fromLTRB(13, 17, 10, 10),
-                        child: const Text(
-                          "Select The Doctor",
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            color: MyColors.maincolor,
-                          ),
-                        ),
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 15), // Adds side spacing
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment:
+                      MainAxisAlignment.center, // Centers content
+                  children: [
+                    const Text(
+                      "Find your Doctor",
+                      style: TextStyle(
+                        fontSize: 28, // Slightly reduced for balance
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
                       ),
-                    ],
-                  ),
+                    ),
+                    const SizedBox(
+                        height: 15), // Space between title and search bar
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius:
+                            BorderRadius.circular(30), // Smooth rounded corners
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.1),
+                            blurRadius: 6,
+                            offset: const Offset(0, 3),
+                          ),
+                        ],
+                      ),
+                      child: TextField(
+                        decoration: InputDecoration(
+                          hintText: "Search by Disease or Specialization",
+                          hintStyle: TextStyle(color: Colors.grey.shade500),
+                          prefixIcon:
+                              const Icon(Icons.search, color: Colors.grey),
+                          border: InputBorder.none, // Removes default underline
+                          contentPadding:
+                              const EdgeInsets.symmetric(vertical: 15),
+                        ),
+                        style: const TextStyle(fontSize: 16),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
-            Container(
-              height: 0.1,
-              color: Colors.grey,
-            ),
             Expanded(
-              flex: 9,
-              child: (() {
-                if (isLoading) {
-                  return const Center(child: CircularProgressIndicator());
-                } else if (errorMessage.isNotEmpty) {
-                  return Center(
-                    child:
-                        Text(errorMessage, style: const TextStyle(color: Colors.red)),
-                  );
-                } else if (doctors.isEmpty) {
-                  return const Center(child: Text('No doctors found'));
-                } else {
-                  return ListView.builder(
-                    itemCount: doctors.length,
-                    itemBuilder: (context, index) {
-                      final doctor = doctors[index];
-                      return Container(
-                        margin:
-                            const EdgeInsets.symmetric(horizontal: 13, vertical: 5),
-                        height: 180,
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color:MyColors.deepMutedTeal,
-                            width: 1.8,
+              flex: 7,
+              child: Container(
+                padding: const EdgeInsets.only(top: 25),
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                    topRight: Radius.circular(60),
+                    topLeft: Radius.circular(60),
+                  ),
+                  boxShadow: [
+      BoxShadow(
+        color: Colors.black, // Shadow color
+        spreadRadius: 1, // How much the shadow spreads
+        blurRadius: 8, // Softness of the shadow
+        offset: Offset(4, 4), // Position of shadow (X, Y)
+      ),
+    ],
+                ),
+                // Adjust padding as needed
+                child: (() {
+                  if (isLoading) {
+                    return const Center(child: CircularProgressIndicator());
+                  } else if (errorMessage.isNotEmpty) {
+                    return Center(
+                      child: Text(errorMessage,
+                          style: const TextStyle(color: Colors.red)),
+                    );
+                  } else if (doctors.isEmpty) {
+                    return const Center(child: Text('No doctors found'));
+                  } else {
+                    return ListView.builder(
+                      itemCount: doctors.length,
+                      itemBuilder: (context, index) {
+                        final doctor = doctors[index];
+                        return Container(
+                          margin: const EdgeInsets.symmetric(
+                              horizontal: 13, vertical: 5),
+                          height: 180,
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: MyColors.deepMutedTeal,
+                              width: 1.8,
+                            ),
+                            borderRadius: BorderRadius.circular(25),
+                            color: Colors.white,
                           ),
-                          borderRadius: BorderRadius.circular(25),
-                          color: Colors.white,
-                        ),
-                        child: Stack(
-                          children: [
-                            Container(
-                              padding:const EdgeInsets.only(top: 20.0, left: 20.0),
-                              child: Align(
-                                alignment: Alignment.topLeft,
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(90),
-                                  child: Image.asset(
-                                    'assets/images/doctor1.jpg',
-                                    fit: BoxFit.cover,
-                                    height: 80,
-                                    width: 80,
+                          child: Stack(
+                            children: [
+                              Container(
+                                padding: const EdgeInsets.only(
+                                    top: 20.0, left: 20.0),
+                                child: Align(
+                                  alignment: Alignment.topLeft,
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(90),
+                                    child: Image.asset(
+                                      'assets/images/doctor1.jpg',
+                                      fit: BoxFit.cover,
+                                      height: 80,
+                                      width: 80,
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                            Container(
-                              padding:const EdgeInsets.only(left: 90, top: 20),
-                              margin:const EdgeInsets.only(left: 20),
-                              child: Text(
-                                doctor['name'],
-                                style:const TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black,
+                              Container(
+                                padding:
+                                    const EdgeInsets.only(left: 90, top: 20),
+                                margin: const EdgeInsets.only(left: 20),
+                                child: Text(
+                                  doctor['name'],
+                                  style: const TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black,
+                                  ),
                                 ),
                               ),
-                            ),
-                            Container(
-                              padding: const EdgeInsets.only(left: 90, top: 22),
-                              margin: const EdgeInsets.only(left: 20, top: 20),
-                              child: Text(
-                                doctor['specialization'],
-                                style: const TextStyle(
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.grey,
+                              Container(
+                                padding:
+                                    const EdgeInsets.only(left: 90, top: 22),
+                                margin:
+                                    const EdgeInsets.only(left: 20, top: 20),
+                                child: Text(
+                                  doctor['specialization'],
+                                  style: const TextStyle(
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.grey,
+                                  ),
                                 ),
                               ),
-                            ),
-                            Positioned(
-                              bottom: 70,
-                              left: 108,
-                              child: Material(
-                                color: Colors.transparent,
-                                child: InkWell(
-                                  onTap: () {
-                                    showModalBottomSheet(
-                                      context: context,
-                                      isScrollControlled: true,
-                                      backgroundColor: Colors.transparent,
-                                      builder: (BuildContext context) {
-                                        return DoctorInfoBottomSheet(
-                                            doctor: doctor);
-                                      },
-                                    );
-                                    print("Info button clicked");
-                                  },
-                                  borderRadius: BorderRadius.circular(25),
-                                  splashColor: Colors.white.withOpacity(0.3),
-                                  highlightColor: Colors.white.withOpacity(0.2),
-                                  child: Container(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 15, vertical: 10),
-                                    decoration: BoxDecoration(
-                                      color: MyColors.deepMutedTeal,
-                                      borderRadius: BorderRadius.circular(20),
-                                    ),
-                                    child:const Text(
-                                      "Info",
-                                      style: TextStyle(
-                                        fontSize: 11,
-                                        fontWeight: FontWeight.bold,
-                                        color:
-                                            Color.fromARGB(255, 255, 255, 255),
+                              Positioned(
+                                bottom: 70,
+                                left: 108,
+                                child: Material(
+                                  color: Colors.transparent,
+                                  child: InkWell(
+                                    onTap: () {
+                                      showModalBottomSheet(
+                                        context: context,
+                                        isScrollControlled: true,
+                                        backgroundColor: Colors.transparent,
+                                        builder: (BuildContext context) {
+                                          return DoctorInfoBottomSheet(
+                                              doctor: doctor);
+                                        },
+                                      );
+                                      print("Info button clicked");
+                                    },
+                                    borderRadius: BorderRadius.circular(25),
+                                    splashColor: Colors.white.withOpacity(0.3),
+                                    highlightColor:
+                                        Colors.white.withOpacity(0.2),
+                                    child: Container(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 15, vertical: 10),
+                                      decoration: BoxDecoration(
+                                        color: MyColors.deepMutedTeal,
+                                        borderRadius: BorderRadius.circular(20),
+                                      ),
+                                      child: const Text(
+                                        "Info",
+                                        style: TextStyle(
+                                          fontSize: 11,
+                                          fontWeight: FontWeight.bold,
+                                          color: Color.fromARGB(
+                                              255, 255, 255, 255),
+                                        ),
                                       ),
                                     ),
                                   ),
                                 ),
                               ),
-                            ),
-                            Positioned(
-                              bottom: 20,
-                              right: 20,
-                              child: MaterialButton(
-                                onPressed: () =>
-                                    _showDatePicker(doctor['name']),
-                                color: MyColors.deepMutedTeal,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(
-                                      18), // Curved border
-                                ),
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 31,
-                                    vertical: 10), // Adjust size
-                                child: const Text(
-                                  "Book",
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white, // White text color
+                              Positioned(
+                                bottom: 20,
+                                right: 20,
+                                child: MaterialButton(
+                                  onPressed: () =>
+                                      _showDatePicker(doctor['name']),
+                                  color: MyColors.deepMutedTeal,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(
+                                        18), // Curved border
+                                  ),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 31,
+                                      vertical: 10), // Adjust size
+                                  child: const Text(
+                                    "Book",
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white, // White text color
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                          ],
-                        ),
-                      );
-                    },
-                  );
-                }
-              })(),
+                            ],
+                          ),
+                        );
+                      },
+                    );
+                  }
+                })(),
+              ),
             )
           ],
         ),

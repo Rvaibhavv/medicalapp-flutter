@@ -17,17 +17,17 @@ class AppointmentPage extends StatefulWidget {
 
 class _AppointmentPageState extends State<AppointmentPage> {
   DateTime? selectedDate;
-
-  // Inside your original file
-
+  TextEditingController searchController = TextEditingController();
+  List<dynamic> doctors = [];
+  List<dynamic> filteredDoctors = [];
+  bool isLoading = true;
+  String errorMessage = '';
   void _showDatePicker(String doctorname) async {
     final DateTime? pickedDate = await showCustomDatePicker(context);
-
     if (pickedDate != null && pickedDate != selectedDate) {
       setState(() async {
         selectedDate = pickedDate;
 
-        // Show time picker and wait for the selected time
         final String? selectedTime = await showModalBottomSheet<String>(
           context: context,
           isScrollControlled: true,
@@ -59,7 +59,7 @@ class _AppointmentPageState extends State<AppointmentPage> {
           showDialog(
             context: context,
             barrierDismissible:
-                false, // Prevents dismissing by tapping outside the dialog
+                false, 
             builder: (BuildContext context) {
               return AlertDialog(
                 title: const Text(
@@ -70,7 +70,7 @@ class _AppointmentPageState extends State<AppointmentPage> {
                 actions: <Widget>[
                   TextButton(
                     onPressed: () {
-                      Navigator.of(context).pop(); // Close the dialog
+                      Navigator.of(context).pop(); 
                     },
                     child: const Text('OK'),
                   ),
@@ -114,7 +114,7 @@ class _AppointmentPageState extends State<AppointmentPage> {
         showDialog(
           context: context,
           barrierDismissible:
-              false, // Prevents dismissing by tapping outside the dialog
+              false, 
           builder: (BuildContext context) {
             return AlertDialog(
               title: const Text(
@@ -137,39 +137,71 @@ class _AppointmentPageState extends State<AppointmentPage> {
     }
   }
 
-  List<dynamic> doctors = [];
-  bool isLoading = true;
-  String errorMessage = '';
 
   @override
   void initState() {
     super.initState();
     fetchDoctors();
+    searchController.addListener(_filterDoctors);
   }
 
-  Future<void> fetchDoctors() async {
-    try {
-      final response = await http
-          .get(Uri.parse('${AppConfig.baseUrl}/docAppoint/doctorlist'));
-      print('Response status: ${response.statusCode}');
-
-      if (response.statusCode == 200) {
-        setState(() {
-          doctors = jsonDecode(response.body);
-          isLoading = false;
-        });
+  void _filterDoctors() {
+    String query = searchController.text.toLowerCase();
+    setState(() {
+      if (query.isEmpty) {
+        filteredDoctors = List.from(doctors);
       } else {
-        setState(() {
-          errorMessage = 'Failed to load doctors. Please try again later.';
-          isLoading = false;
-        });
+        filteredDoctors = doctors.where((doctor) {
+          String name = doctor['name'].toLowerCase();
+          String specialization = doctor['specialization'].toLowerCase();
+          List<String> diseases = [
+            doctor['disease1']?.toLowerCase() ?? '',
+            doctor['disease2']?.toLowerCase() ?? '',
+            doctor['disease3']?.toLowerCase() ?? '',
+            doctor['disease4']?.toLowerCase() ?? '',
+            doctor['disease5']?.toLowerCase() ?? '',
+            doctor['disease6']?.toLowerCase() ?? '',
+            doctor['disease7']?.toLowerCase() ?? '',
+          ];
+
+          return name.contains(query) || specialization.contains(query) || diseases.any((d) => d.contains(query));
+        }).toList();
       }
-    } catch (e) {
+    });
+  }
+
+  Future<void> fetchDoctors({String query = ""}) async {
+  try {
+    final response = await http.get(
+      Uri.parse('${AppConfig.baseUrl}/docAppoint/doctorlist/?search=$query'),
+    );
+
+    print('Response status: ${response.statusCode}');
+
+    if (response.statusCode == 200) {
       setState(() {
-        errorMessage = 'Error fetching data: $e';
+        doctors = jsonDecode(response.body);
+        isLoading = false;
+      });
+    } else {
+      setState(() {
+        errorMessage = 'Failed to load doctors. Please try again later.';
         isLoading = false;
       });
     }
+  } catch (e) {
+    setState(() {
+      errorMessage = 'Error fetching data: $e';
+      isLoading = false;
+    });
+  }
+}
+
+
+   @override
+  void dispose() {
+    searchController.dispose();
+    super.dispose();
   }
 
   @override
@@ -215,6 +247,9 @@ class _AppointmentPageState extends State<AppointmentPage> {
                         ],
                       ),
                       child: TextField(
+                        onChanged: (value) {
+    fetchDoctors(query: value);  // Call API with search query
+  },
                         decoration: InputDecoration(
                           hintText: "Search by Disease or Specialization",
                           hintStyle: TextStyle(color: Colors.grey.shade500),
@@ -242,15 +277,14 @@ class _AppointmentPageState extends State<AppointmentPage> {
                     topLeft: Radius.circular(60),
                   ),
                   boxShadow: [
-      BoxShadow(
-        color: Colors.black, // Shadow color
-        spreadRadius: 1, // How much the shadow spreads
-        blurRadius: 8, // Softness of the shadow
-        offset: Offset(4, 4), // Position of shadow (X, Y)
-      ),
-    ],
+                    BoxShadow(
+                      color: Colors.black, 
+                      spreadRadius: 1, 
+                      blurRadius: 8, 
+                      offset: Offset(4, 4), 
+                    ),
+                  ],
                 ),
-                // Adjust padding as needed
                 child: (() {
                   if (isLoading) {
                     return const Center(child: CircularProgressIndicator());
@@ -375,17 +409,17 @@ class _AppointmentPageState extends State<AppointmentPage> {
                                   color: MyColors.deepMutedTeal,
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(
-                                        18), // Curved border
+                                        18), 
                                   ),
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 31,
-                                      vertical: 10), // Adjust size
+                                      vertical: 10), 
                                   child: const Text(
                                     "Book",
                                     style: TextStyle(
                                       fontSize: 20,
                                       fontWeight: FontWeight.bold,
-                                      color: Colors.white, // White text color
+                                      color: Colors.white, 
                                     ),
                                   ),
                                 ),

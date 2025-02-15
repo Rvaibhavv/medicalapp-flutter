@@ -10,7 +10,7 @@ class Timepicker extends StatefulWidget {
 class _TimepickerState extends State<Timepicker> {
   final  ContainerColor = MyColors.maincolor; // Define the border color
   int? selectedIndex; // State to keep track of the selected container
-  String? selectedTime; // Variable to store the selected time
+  String? selectedTime; // Variable to store the selected tim
 
   @override
   Widget build(BuildContext context) {

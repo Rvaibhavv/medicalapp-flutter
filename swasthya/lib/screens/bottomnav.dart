@@ -1,52 +1,60 @@
 import 'package:flutter/material.dart';
-import 'home.dart';
+import 'Home/home.dart';
 import 'search.dart';
 import 'Profile.dart';
 import 'settings.dart';
 import 'appointmentpage/appointment.dart';
 import 'mycolors.dart';
 
-
 class BottomNavScreen extends StatefulWidget {
-  
+  final int startIndex;
+
+  const BottomNavScreen({Key? key, this.startIndex = 0}) : super(key: key);
 
   @override
   _BottomNavScreenState createState() => _BottomNavScreenState();
 }
 
 class _BottomNavScreenState extends State<BottomNavScreen> {
-  int _currentIndex = 0; // Tracks the selected tab
-  bool _isCenterButtonSelected =
-      false; // Tracks whether the center button is selected
+  late int _currentIndex;
+  bool _isCenterButtonSelected = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _currentIndex = widget.startIndex;
+  }
 
   final List<Widget> _pages = [
-    HomePage(), // Index 0
-    SearchPage(), // Index 1
+    HomePage(),
+    SearchPage(),
     AppointmentPage(),
-    ProfilePage(), // Index 3
-    SettingsPage(), // Index 4
-    // Index 5 (for the center button)
+    ProfilePage(),
+    SettingsPage(),
   ];
+
+  void _changePage(int index) {
+    setState(() {
+      _currentIndex = index;
+      _isCenterButtonSelected = index == 2;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _pages[_currentIndex], // Displays the selected page
+      body: _pages[_currentIndex],
       bottomNavigationBar: Stack(
-        clipBehavior: Clip.none, // Allows overflowing widgets
+        clipBehavior: Clip.none,
         children: [
           BottomNavigationBar(
             type: BottomNavigationBarType.fixed,
             currentIndex: _currentIndex,
-            backgroundColor: Colors.white, // Set background color to white
+            backgroundColor: Colors.white,
             onTap: (index) {
-              setState(() {
-                if (index != 2) {
-                  _currentIndex = index;
-                  _isCenterButtonSelected =
-                      false; // Reset center button state when tapping non-center
-                }
-              });
+              if (index != 2) {
+                _changePage(index);
+              }
             },
             items: const [
               BottomNavigationBarItem(
@@ -58,7 +66,7 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
                 label: 'Pharmacy',
               ),
               BottomNavigationBarItem(
-                icon: SizedBox.shrink(), // Placeholder for the bulged icon
+                icon: SizedBox.shrink(),
                 label: '',
               ),
               BottomNavigationBarItem(
@@ -66,7 +74,7 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
                 label: 'Diagnostics',
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.medical_services_outlined), // Outlined ambulance icon
+                icon: Icon(Icons.medical_services_outlined),
                 label: 'Ambulance',
               ),
             ],
@@ -75,17 +83,10 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
             showUnselectedLabels: true,
           ),
           Positioned(
-            bottom: 25, // Adjust the position to make the icon bulge upwards
-            left: MediaQuery.of(context).size.width / 2 - 35, // Center the icon
+            bottom: 25,
+            left: MediaQuery.of(context).size.width / 2 - 35,
             child: GestureDetector(
-              onTap: () {
-                setState(() {
-                  _currentIndex =
-                      2; // Set index for the center button to AppointmentPage
-                  _isCenterButtonSelected =
-                      !_isCenterButtonSelected; // Toggle the selected state
-                });
-              },
+              onTap: () => _changePage(2),
               child: Container(
                 width: 70,
                 height: 70,
@@ -93,9 +94,7 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
                   shape: BoxShape.circle,
                   color: Colors.white,
                   border: Border.all(
-                    color: _isCenterButtonSelected
-                        ? MyColors.maincolor // Border color when selected
-                        : Colors.transparent, // No border when not selected
+                    color: _isCenterButtonSelected ? MyColors.maincolor : Colors.transparent,
                     width: 1.8,
                   ),
                   boxShadow: [
@@ -107,7 +106,7 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
                   ],
                 ),
                 child: Icon(
-                  Icons.add, // Hollow plus icon
+                  Icons.add,
                   size: 40,
                   color: MyColors.maincolor,
                 ),

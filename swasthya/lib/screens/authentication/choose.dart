@@ -4,6 +4,7 @@ import 'package:swasthya/screens/authentication/privacy.dart';
 import 'package:swasthya/screens/authentication/signin1.dart';
 import 'package:swasthya/screens/authentication/login.dart';
 import 'package:swasthya/screens/mycolors.dart';
+import 'package:swasthya/screens/bottomnav.dart';
 class Choose extends StatefulWidget {
   const Choose({super.key});
 
@@ -167,6 +168,26 @@ class _ChooseState extends State<Choose> {
                         ),
                       ),
                     ),
+                    //from here
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  BottomNavScreen()), // Your home screen widget
+                        );
+                      },
+                      child: const Text(
+                        "secret",
+                        style: TextStyle(
+                          fontSize: 10,
+                          fontWeight: FontWeight.w900,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),//to hereee*****
+                    //to be removed if anytime it is used in real world application
                   ],
                 ),
               )

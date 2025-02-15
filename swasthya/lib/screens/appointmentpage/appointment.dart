@@ -22,7 +22,7 @@ class _AppointmentPageState extends State<AppointmentPage> {
   List<dynamic> filteredDoctors = [];
   bool isLoading = true;
   String errorMessage = '';
-  void _showDatePicker(String doctorname) async {
+  void _showDatePicker(String doctorname,int doctorid) async {
     final DateTime? pickedDate = await showCustomDatePicker(context);
     if (pickedDate != null && pickedDate != selectedDate) {
       setState(() async {
@@ -41,6 +41,7 @@ class _AppointmentPageState extends State<AppointmentPage> {
           print('Selected date: $selectedDate');
           print('Selected time: $selectedTime');
           print('Doctor name: $doctorname');
+          print('Doctor id:$doctorid');
           // ignore: unused_local_variable
           final String? payment = await showModalBottomSheet<String>(
             context: context,
@@ -51,6 +52,7 @@ class _AppointmentPageState extends State<AppointmentPage> {
                 selectedDate: selectedDate,
                 selectedTime: selectedTime,
                 doctorname: doctorname,
+                doctorid: doctorid,
               );
             },
           );
@@ -96,6 +98,7 @@ class _AppointmentPageState extends State<AppointmentPage> {
         print('Selected date: $selectedDate');
         print('Selected time: $selectedTime');
         print('Doctor name: $doctorname');
+        print('Doctor id:$doctorid');
 // ignore: unused_local_variable
         final String? payment = await showModalBottomSheet<String>(
           context: context,
@@ -106,6 +109,7 @@ class _AppointmentPageState extends State<AppointmentPage> {
               selectedDate: selectedDate,
               selectedTime: selectedTime,
               doctorname: doctorname,
+              doctorid:doctorid,
             );
           },
         );
@@ -145,6 +149,8 @@ class _AppointmentPageState extends State<AppointmentPage> {
     searchController.addListener(_filterDoctors);
   }
 
+
+
   void _filterDoctors() {
     String query = searchController.text.toLowerCase();
     setState(() {
@@ -177,6 +183,7 @@ class _AppointmentPageState extends State<AppointmentPage> {
     );
 
     print('Response status: ${response.statusCode}');
+
 
     if (response.statusCode == 200) {
       setState(() {
@@ -212,7 +219,7 @@ class _AppointmentPageState extends State<AppointmentPage> {
         child: Column(
           children: [
             Expanded(
-              flex: 2,
+              flex: 3,
               child: Container(
                 color: MyColors.maincolor,
                 width: double.infinity,
@@ -267,7 +274,7 @@ class _AppointmentPageState extends State<AppointmentPage> {
               ),
             ),
             Expanded(
-              flex: 7,
+              flex: 8,
               child: Container(
                 padding: const EdgeInsets.only(top: 25),
                 decoration: const BoxDecoration(
@@ -405,7 +412,7 @@ class _AppointmentPageState extends State<AppointmentPage> {
                                 right: 20,
                                 child: MaterialButton(
                                   onPressed: () =>
-                                      _showDatePicker(doctor['name']),
+                                      _showDatePicker(doctor['name'],doctor['id']),
                                   color: MyColors.deepMutedTeal,
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(

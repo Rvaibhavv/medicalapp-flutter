@@ -3,7 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:swasthya/screens/mycolors.dart';
 import '../bottomnav.dart';
-import '../../config.dart';  
+import '../../config.dart';
+import 'package:provider/provider.dart';
+import '../../user_provider.dart';
+
 const Color primaryColor = MyColors.maincolor;
 
 class SignIn2Screen extends StatefulWidget {
@@ -47,6 +50,7 @@ class _SignIn2ScreenState extends State<SignIn2Screen> {
     );
 
     if (response.statusCode == 201) {
+          Provider.of<UserProvider>(context, listen: false).setUser('name');
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => BottomNavScreen()),

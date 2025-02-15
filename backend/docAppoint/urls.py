@@ -1,7 +1,7 @@
 # docAppoint/urls.py
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from .views import  DoctorViewSet
+from .views import  DoctorViewSet,book_appointment,get_upcoming_appointments
 router = DefaultRouter()
 router.register(r'doctorlist', DoctorViewSet, basename='doctor')
 
@@ -10,4 +10,6 @@ router.register(r'doctorlist', DoctorViewSet, basename='doctor')
 
 urlpatterns = [
     path('', include(router.urls)),
+    path('book-appointment/', book_appointment, name='book_appointment'),
+    path('api/appointments/', get_upcoming_appointments, name='get_appointments'),
 ]

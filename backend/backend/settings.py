@@ -33,6 +33,7 @@ ALLOWED_HOSTS = ['*']
 INSTALLED_APPS = [
     'accounts',
     'rest_framework',
+    'channels',
     'corsheaders',
     'docAppoint',
     'django.contrib.admin',
@@ -43,6 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 ]
 CORS_ALLOW_ALL_ORIGINS = True  # Allow any frontend to access API
+ASGI_APPLICATION = "backend.asgi.application"
 
 MIDDLEWARE = [
     'debug_toolbar.middleware.DebugToolbarMiddleware',

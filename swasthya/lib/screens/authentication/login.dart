@@ -4,6 +4,8 @@ import 'dart:convert';
 import '../bottomnav.dart';
 import '../../config.dart';
 import '../mycolors.dart';
+import 'package:provider/provider.dart';
+import '../../user_provider.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -40,6 +42,9 @@ class _LoginScreenState extends State<LoginScreen> {
     final data = jsonDecode(response.body);
     
     print("Login Successful: $data");
+
+    Provider.of<UserProvider>(context, listen: false).setUser(data['name']);
+    Provider.of<UserProvider>(context, listen: false).setId(data['user_id']);
 
     Navigator.pushReplacement(
       context,

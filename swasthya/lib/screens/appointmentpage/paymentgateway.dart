@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:swasthya/screens/customnavbar.dart'; // Import the custom navbar
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'package:swasthya/screens/customnavbar.dart';
+import '../mycolors.dart';
+import '../../user_provider.dart';
+import 'package:provider/provider.dart';
+import '../../config.dart';
 
 class Paymentgateway extends StatefulWidget {
   final DateTime? selectedDate;
   final String selectedTime;
+  final int doctorid;
   final String doctorname;
 
   const Paymentgateway({
@@ -12,21 +19,61 @@ class Paymentgateway extends StatefulWidget {
     required this.selectedDate,
     required this.selectedTime,
     required this.doctorname,
+    required this.doctorid,
   }) : super(key: key);
 
   @override
   State<Paymentgateway> createState() => _PaymentgatewayState();
 }
 
-
-
 class _PaymentgatewayState extends State<Paymentgateway> {
+  bool _isLoading = false;
+
+  Future<void> bookAppointment(int userid) async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    try {
+      final response = await http.post(
+        Uri.parse('${AppConfig.baseUrl}/docAppoint/book-appointment/'), // Update this URL
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({
+          'user_id': userid,
+          'doctor_id': widget.doctorid,
+          'doctor_name': widget.doctorname,
+          'appointment_date': DateFormat('yyyy-MM-dd').format(widget.selectedDate!),
+          'appointment_time': widget.selectedTime,
+        }),
+      );
+
+      if (response.statusCode == 201) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Appointment booked successfully!')),
+        );
+        Navigator.pop(context); // Go back after booking
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Failed to book appointment!')),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error: $e')),
+      );
+    }
+
+    setState(() {
+      _isLoading = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    // Format the selected date
+    int userid = Provider.of<UserProvider>(context).userId;
     String formattedDate = widget.selectedDate != null
         ? DateFormat('d MMMM yyyy').format(widget.selectedDate!)
-        : 'No date selected'; // Format the date as "d MMMM yyyy"
+        : 'No date selected';
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -36,160 +83,97 @@ class _PaymentgatewayState extends State<Paymentgateway> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             CustomNavBar(title: "Payment"),
-            
+
             // Booking Summary
             Container(
-              margin: const EdgeInsets.all(16.0), // Add margin to create spacing around the box
+              margin: const EdgeInsets.all(16.0),
               padding: const EdgeInsets.all(16.0),
               decoration: BoxDecoration(
-                color: Colors.white,  // Background color of the box
-                borderRadius: BorderRadius.circular(12.0),  // Rounded corners
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(12.0),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.1),  // Subtle shadow color
-                    spreadRadius: 1,  // Spread of shadow
-                    blurRadius: 2,  // Blur effect
-                    offset: const Offset(0, 1),  // Shadow position
+                    color: Colors.black.withOpacity(0.1),
+                    spreadRadius: 1,
+                    blurRadius: 2,
+                    offset: const Offset(0, 1),
                   ),
                 ],
-                border: Border.all(
-                  color: Colors.grey.shade300,  // Light grey border
-                  width: 1,  // Border width
-                ),
+                border: Border.all(color: Colors.grey.shade300, width: 1),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text(
                     'Booking Summary',
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black87,  // Darker color for readability
-                    ),
+                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.black87),
                   ),
-                  const Divider(thickness: 1, color: Colors.grey),  // Adds a separator line
+                  const Divider(thickness: 1, color: Colors.grey),
                   const SizedBox(height: 10),
-                  Text(
-                    'Doctor Name: ${widget.doctorname}',
-                    style: const TextStyle(fontSize: 18, color: Colors.black54),
-                  ),
+                  Text('Doctor Name: ${widget.doctorname}', style: const TextStyle(fontSize: 18, color: Colors.black54)),
                   const SizedBox(height: 10),
-                  Text(
-                    'Appointment Date: $formattedDate', // Display formatted date
-                    style: const TextStyle(fontSize: 18, color: Colors.black54),
-                  ),
+                  Text('Appointment Date: $formattedDate', style: const TextStyle(fontSize: 18, color: Colors.black54)),
                   const SizedBox(height: 10),
-                  Text(
-                    'Appointment Time: ${widget.selectedTime}',
-                    style: const TextStyle(fontSize: 18, color: Colors.black54),
-                  ),
+                  Text('Appointment Time: ${widget.selectedTime}', style: const TextStyle(fontSize: 18, color: Colors.black54)),
                 ],
               ),
             ),
 
             // Payment Details
             Container(
-              margin: const EdgeInsets.all(16.0), // Add margin to create spacing around the box
+              margin: const EdgeInsets.all(16.0),
               padding: const EdgeInsets.all(16.0),
               decoration: BoxDecoration(
-                color: Colors.white,  // Background color of the box
-                borderRadius: BorderRadius.circular(12.0),  // Rounded corners
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(12.0),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.1),  // Subtle shadow color
-                    spreadRadius: 1,  // Spread of shadow
-                    blurRadius: 2,  // Blur effect
-                    offset: const Offset(0, 1),  // Shadow position
+                    color: Colors.black.withOpacity(0.1),
+                    spreadRadius: 1,
+                    blurRadius: 2,
+                    offset: const Offset(0, 1),
                   ),
                 ],
-                border: Border.all(
-                  color: Colors.grey.shade300,  // Light grey border
-                  width: 1,  // Border width
-                ),
+                border: Border.all(color: Colors.grey.shade300, width: 1),
               ),
               child: const Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     'Payment Details',
-                    style:  TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black87,  // Darker color for readability
-                    ),
+                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.black87),
                   ),
-                   Divider(thickness: 1, color: Colors.grey),  // Adds a separator line
-                   SizedBox(height: 10),
-                  Text(
-                    'Consultation Fee: ₹500',
-                    style:  TextStyle(fontSize: 18, color: Colors.black54),
-                  ),
-                   SizedBox(height: 10),
-                  Text(
-                    'Service Charge: ₹50',
-                    style:  TextStyle(fontSize: 18, color: Colors.black54),
-                  ),
-                   SizedBox(height: 10),
-                  Text(
-                    'Total Amount: ₹550',
-                    style:  TextStyle(
-                        fontSize: 18,
-                        color: Colors.black87,
-                        fontWeight: FontWeight.bold),
-                  ),
+                  Divider(thickness: 1, color: Colors.grey),
+                  SizedBox(height: 10),
+                  Text('Consultation Fee: ₹500', style: TextStyle(fontSize: 18, color: Colors.black54)),
+                  SizedBox(height: 10),
+                  Text('Service Charge: ₹50', style: TextStyle(fontSize: 18, color: Colors.black54)),
+                  SizedBox(height: 10),
+                  Text('Total Amount: ₹550', style: TextStyle(fontSize: 18, color: Colors.black87, fontWeight: FontWeight.bold)),
                 ],
               ),
             ),
-            Container(
-  margin: const EdgeInsets.all(16.0),
-  padding: const EdgeInsets.all(16.0),
-  decoration: BoxDecoration(
-    color: Colors.white,
-    borderRadius: BorderRadius.circular(12.0),
-    boxShadow: [
-      BoxShadow(
-        color: Colors.black.withOpacity(0.1),
-        spreadRadius: 1,
-        blurRadius: 2,
-        offset: const Offset(0, 1),
-      ),
-    ],
-    border: Border.all(color: Colors.grey.shade300, width: 1),
-  ),
-  child: Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      const Text(
-        'Select Payment Method',
-        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-      ),
-      const Divider(thickness: 1, color: Colors.grey),
-      const SizedBox(height: 10),
-      DropdownButton<String>(
-        value: 'Credit Card',  // Initial value
-        items:const [
-          DropdownMenuItem<String>(
-            value: 'Credit Card',
-            child: Text('Credit Card'),
-          ),
-          DropdownMenuItem<String>(
-            value: 'Debit Card',
-            child: Text('Debit Card'),
-          ),
-          DropdownMenuItem<String>(
-            value: 'UPI',
-            child: Text('UPI'),
-          ),
-        ],
-        onChanged: (String? newValue) {
-          // Handle the selection here
-        },
-      ),
-    ],
-  ),
-)
 
+            // Pay Now Button
+            Align(
+              alignment: Alignment.centerRight,
+              child: Container(
+                width: 150,
+                margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                child: MaterialButton(
+                  onPressed: _isLoading ? null : () => bookAppointment(userid),
+                  color: MyColors.maincolor,
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+                  padding: const EdgeInsets.symmetric(vertical: 14),
+                  child: _isLoading
+                      ? const CircularProgressIndicator(color: Colors.white)
+                      : const Text(
+                          'Pay Now',
+                          style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
+                        ),
+                ),
+              ),
+            )
           ],
         ),
       ),

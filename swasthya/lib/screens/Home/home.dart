@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:swasthya/screens/bottomnav.dart';
 import 'package:swasthya/screens/mycolors.dart';
@@ -235,6 +236,7 @@ class HomePage extends StatelessWidget {
       }
 
       return Container(
+        color: Colors.white,
         padding: EdgeInsets.all(12),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -253,6 +255,7 @@ class HomePage extends StatelessWidget {
                 itemBuilder: (context, index) {
                   final appointment = userAppointments[index];
                   return Card(
+                    color: Colors.white,
                     margin: EdgeInsets.symmetric(vertical: 6),
                     child: ListTile(
                       leading: Icon(Icons.calendar_today, color: MyColors.deepTealGreen),

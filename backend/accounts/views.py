@@ -23,8 +23,11 @@ def register_user(request):
             )
 
             print("User Created:", user)  # Debugging print
-
-            return JsonResponse({"message": "User registered successfully!"}, status=201)
+    
+            return JsonResponse({
+                "id": user.id,
+                "name": user.name,
+                "message": "User registered successfully!"}, status=201)
         
         except Exception as e:
             print("Error:", str(e))  # Debugging print

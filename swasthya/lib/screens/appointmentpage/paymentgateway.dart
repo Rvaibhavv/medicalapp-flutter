@@ -7,6 +7,7 @@ import '../mycolors.dart';
 import '../../user_provider.dart';
 import 'package:provider/provider.dart';
 import '../../config.dart';
+import '../bottomnav.dart';
 
 class Paymentgateway extends StatefulWidget {
   final DateTime? selectedDate;
@@ -161,17 +162,35 @@ class _PaymentgatewayState extends State<Paymentgateway> {
                 width: 150,
                 margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                 child: MaterialButton(
-                  onPressed: _isLoading ? null : () => bookAppointment(userid),
-                  color: MyColors.maincolor,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-                  padding: const EdgeInsets.symmetric(vertical: 14),
-                  child: _isLoading
-                      ? const CircularProgressIndicator(color: Colors.white)
-                      : const Text(
-                          'Pay Now',
-                          style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
-                        ),
-                ),
+  onPressed: _isLoading
+      ? null
+      : () async {
+          await bookAppointment(userid);
+          Navigator.pushReplacement(
+            context,
+            PageRouteBuilder(
+              pageBuilder: (context, animation, secondaryAnimation) =>
+                  BottomNavScreen(startIndex: 0),
+              transitionDuration: Duration.zero, // No animation duration
+              reverseTransitionDuration: Duration.zero, // No reverse animation
+            ),
+          );
+        },
+  color: MyColors.maincolor,
+  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+  padding: const EdgeInsets.symmetric(vertical: 14),
+  child: _isLoading
+      ? const CircularProgressIndicator(color: Colors.white)
+      : const Text(
+          'Pay Now',
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+)
+
               ),
             )
           ],

@@ -33,34 +33,60 @@ class _SignIn2ScreenState extends State<SignIn2Screen> {
   final TextEditingController _passwordController = TextEditingController();
 
   Future<void> _completeRegistration() async {
-    if (!_formKey.currentState!.validate()) return;
+  if (!_formKey.currentState!.validate()) return;
 
-    final url = Uri.parse('${AppConfig.baseUrl}/api/register/');
-    final response = await http.post(
-      url,
-      headers: {"Content-Type": "application/json"},
-      body: jsonEncode({
-        'name': widget.name,
-        'dob': widget.dob,
-        'gender': widget.gender,
-        'phone': widget.phone,
-        'email': _emailController.text,
-        'password': _passwordController.text,
-      }),
-    );
+  final url = Uri.parse('${AppConfig.baseUrl}/api/register/');
+  final response = await http.post(
+    url,
+    headers: {"Content-Type": "application/json"},
+    body: jsonEncode({
+      'name': widget.name,
+      'dob': widget.dob,
+      'gender': widget.gender,
+      'phone': widget.phone,
+      'email': _emailController.text,
+      'password': _passwordController.text,
+    }),
+  );
 
-    if (response.statusCode == 201) {
-          Provider.of<UserProvider>(context, listen: false).setUser('name');
+  print('Response Status Code: ${response.statusCode}');
+  print('Response Body: ${response.body}');
+
+  if (response.statusCode == 201) {
+    final Map<String, dynamic> responseData = jsonDecode(response.body);
+    print('Decoded Response Data: $responseData');
+
+    if (responseData.containsKey('id') && responseData.containsKey('name')) {
+      
+      int userId = responseData['id'];
+      print('User IDssssssssssssss: $userId');
+      String userName = responseData['name'];
+
+      // Store in Provider
+      Provider.of<UserProvider>(context, listen: false).setUser(userName);
+      Provider.of<UserProvider>(context, listen: false).setId(userId);
+
+      print('User ID: $userId');
+      print('User Name: $userName');
+
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => BottomNavScreen()),
       );
     } else {
+      print('Error: ID or Name missing in response');
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error: ${jsonDecode(response.body)['error']}')),
+        SnackBar(content: Text('Error: Unexpected response format')),
       );
     }
+  } else {
+    final errorMessage = jsonDecode(response.body)['error'] ?? 'Registration failed';
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Error: $errorMessage')),
+    );
   }
+}
+
 
   
   @override

@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:swasthya/screens/bottomnav.dart';
 import 'package:swasthya/screens/mycolors.dart';
@@ -16,14 +15,11 @@ Future<List<Appointment>> fetchAppointments() async {
   if (response.statusCode == 200) {
     List<dynamic> data = json.decode(response.body);
 
-      return data.map((json) => Appointment.fromJson(json)).toList();
-    
+    return data.map((json) => Appointment.fromJson(json)).toList();
   } else {
     throw Exception('Failed to load appointments');
   }
-  return []; // Return an empty list if no appointments are fetched
 }
-
 
 class Appointment {
   final String doctorName;
@@ -31,29 +27,32 @@ class Appointment {
   final String date;
   final String time;
 
-  Appointment({required this.doctorName,required this.userId, required this.date, required this.time});
+  Appointment(
+      {required this.doctorName,
+      required this.userId,
+      required this.date,
+      required this.time});
 
   factory Appointment.fromJson(Map<String, dynamic> json) {
     return Appointment(
       doctorName: json['doctor_name'],
-      userId: json['user_id'], 
+      userId: json['user_id'],
       date: json['appointment_date'],
       time: json['appointment_time'],
     );
   }
 }
 
-
 class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    String username =Provider.of<UserProvider>(context).userName;
+    String username = Provider.of<UserProvider>(context).userName;
     return Scaffold(
       appBar: AppBar(
-        title:  Column(
+        title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-           const Text('Welcome back,',
+            const Text('Welcome back,',
                 style: TextStyle(color: Colors.white, fontSize: 13)),
             Text('$username',
                 style: const TextStyle(
@@ -103,7 +102,7 @@ class HomePage extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(
+                      const Text(
                         "Find Your Doctor",
                         style: TextStyle(
                           fontSize: 32,
@@ -148,7 +147,7 @@ class HomePage extends StatelessWidget {
               ),
             ),
             Expanded(
-              flex: 2,
+              flex: 3,
               child: Container(
                 color: Colors.white,
                 child: Row(
@@ -213,67 +212,68 @@ class HomePage extends StatelessWidget {
               ),
             ),
             Expanded(
-  flex: 7,
-  child: FutureBuilder<List<Appointment>>(
-    future: fetchAppointments(),
-    builder: (context, snapshot) {
-      if (snapshot.connectionState == ConnectionState.waiting) {
-        return Center(child: CircularProgressIndicator());
-      } else if (snapshot.hasError) {
-        return Center(child: Text('Error loading appointments'));
-      } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-        return Center(child: Text('No upcoming appointments'));
-      }
+              flex: 7,
+              child: FutureBuilder<List<Appointment>>(
+                future: fetchAppointments(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasError) {
+                    return const Center(
+                        child: Text('Error loading appointments'));
+                  } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                    return const Center(
+                        child: Text('No upcoming appointments'));
+                  }
+                  int userId =
+                      Provider.of<UserProvider>(context, listen: false).userId;
+                  final userAppointments = snapshot.data!
+                      .where((appointment) => appointment.userId == userId)
+                      .toList();
 
-      int userId = Provider.of<UserProvider>(context, listen: false).userId; // Get user ID
+                  if (userAppointments.isEmpty) {
+                    return Center(child: Text('No upcoming appointments'));
+                  }
 
-      // Filter appointments based on userId
-      final userAppointments =
-          snapshot.data!.where((appointment) => appointment.userId == userId).toList();
-
-      if (userAppointments.isEmpty) {
-        return Center(child: Text('No upcoming appointments'));
-      }
-
-      return Container(
-        color: Colors.white,
-        padding: EdgeInsets.all(12),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Upcoming Appointments',
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            SizedBox(height: 10),
-            Expanded(
-              child: ListView.builder(
-                itemCount: userAppointments.length,
-                itemBuilder: (context, index) {
-                  final appointment = userAppointments[index];
-                  return Card(
+                  return Container(
                     color: Colors.white,
-                    margin: EdgeInsets.symmetric(vertical: 6),
-                    child: ListTile(
-                      leading: Icon(Icons.calendar_today, color: MyColors.deepTealGreen),
-                      title: Text(appointment.doctorName),
-                      subtitle: Text('${appointment.date} at ${appointment.time}'),
+                    padding: EdgeInsets.all(12),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          'Upcoming Appointments',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        Expanded(
+                          child: ListView.builder(
+                            itemCount: userAppointments.length,
+                            itemBuilder: (context, index) {
+                              final appointment = userAppointments[index];
+                              return Card(
+                                color: Colors.white,
+                                margin: const EdgeInsets.symmetric(vertical: 6),
+                                child: ListTile(
+                                  leading: const Icon(Icons.calendar_today,
+                                      color: MyColors.deepTealGreen),
+                                  title: Text(appointment.doctorName),
+                                  subtitle: Text(
+                                      '${appointment.date} at ${appointment.time}'),
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                      ],
                     ),
                   );
                 },
               ),
             ),
-          ],
-        ),
-      );
-    },
-  ),
-),
-
-
           ],
         ),
       ),

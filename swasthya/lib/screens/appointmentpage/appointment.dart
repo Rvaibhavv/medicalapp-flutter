@@ -33,15 +33,12 @@ class _AppointmentPageState extends State<AppointmentPage> {
           isScrollControlled: true,
           backgroundColor: Colors.transparent,
           builder: (BuildContext context) {
-            return Timepicker();
+            return const Timepicker();
           },
         );
 
         if (selectedTime != null) {
-          print('Selected date: $selectedDate');
-          print('Selected time: $selectedTime');
-          print('Doctor name: $doctorname');
-          print('Doctor id:$doctorid');
+          
           // ignore: unused_local_variable
           final String? payment = await showModalBottomSheet<String>(
             context: context,
@@ -57,7 +54,7 @@ class _AppointmentPageState extends State<AppointmentPage> {
             },
           );
         } else {
-          print('No time selected.');
+          
           showDialog(
             context: context,
             barrierDismissible:
@@ -90,15 +87,12 @@ class _AppointmentPageState extends State<AppointmentPage> {
         isScrollControlled: true,
         backgroundColor: Colors.transparent,
         builder: (BuildContext context) {
-          return Timepicker();
+          return const Timepicker();
         },
       );
 
       if (selectedTime != null) {
-        print('Selected date: $selectedDate');
-        print('Selected time: $selectedTime');
-        print('Doctor name: $doctorname');
-        print('Doctor id:$doctorid');
+        
 // ignore: unused_local_variable
         final String? payment = await showModalBottomSheet<String>(
           context: context,
@@ -114,7 +108,6 @@ class _AppointmentPageState extends State<AppointmentPage> {
           },
         );
       } else {
-        print('No time selected.');
         showDialog(
           context: context,
           barrierDismissible:

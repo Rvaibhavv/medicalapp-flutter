@@ -7,10 +7,10 @@ class TermsPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text("📜 Terms and Conditions"),
+        title: const Text("📜 Terms and Conditions"),
       ),
       body: Padding(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -72,7 +72,8 @@ class TermsPage extends StatelessWidget {
                     Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => Choose(),
+                        builder: (context) => const 
+                        Choose(),
                       ), // Your next screen
                     );
                   },

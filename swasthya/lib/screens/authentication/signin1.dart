@@ -89,7 +89,7 @@ class SignIn1ScreenState extends State<SignIn1Screen> {
                       .min, // Keeps it at the bottom instead of taking full space
                   crossAxisAlignment:
                       CrossAxisAlignment.start, // Aligns text to the left
-                  children: const [
+                  children:  [
                     Text(
                       'Sign Up',
                       style: TextStyle(

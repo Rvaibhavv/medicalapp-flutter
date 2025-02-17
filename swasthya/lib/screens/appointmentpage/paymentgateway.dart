@@ -49,9 +49,7 @@ class _PaymentgatewayState extends State<Paymentgateway> {
       );
 
       if (response.statusCode == 201) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Appointment booked successfully!')),
-        );
+          print('Appointment booked successfully!');
         Navigator.pop(context); // Go back after booking
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -170,7 +168,7 @@ class _PaymentgatewayState extends State<Paymentgateway> {
             context,
             PageRouteBuilder(
               pageBuilder: (context, animation, secondaryAnimation) =>
-                  BottomNavScreen(startIndex: 0),
+                  const BottomNavScreen(startIndex: 0),
               transitionDuration: Duration.zero, // No animation duration
               reverseTransitionDuration: Duration.zero, // No reverse animation
             ),

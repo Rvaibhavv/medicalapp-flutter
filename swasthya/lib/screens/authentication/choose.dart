@@ -57,7 +57,7 @@ class _ChooseState extends State<Choose> {
                           context,
                           MaterialPageRoute(
                               builder: (context) =>
-                                  SignIn1Screen()), // Your home screen widget
+                                  const SignIn1Screen()), // Your home screen widget
                         );
                       },
                   color: Colors.white, // Button background is white
@@ -88,7 +88,7 @@ class _ChooseState extends State<Choose> {
                           context,
                           MaterialPageRoute(
                               builder: (context) =>
-                                  LoginScreen()), // Your home screen widget
+                                  const LoginScreen()), // Your home screen widget
                                   
                         );
                     
@@ -111,7 +111,7 @@ class _ChooseState extends State<Choose> {
                   ),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               SizedBox(
@@ -175,7 +175,7 @@ class _ChooseState extends State<Choose> {
                           context,
                           MaterialPageRoute(
                               builder: (context) =>
-                                  BottomNavScreen()), // Your home screen widget
+                                 const BottomNavScreen()), // Your home screen widget
                         );
                       },
                       child: const Text(

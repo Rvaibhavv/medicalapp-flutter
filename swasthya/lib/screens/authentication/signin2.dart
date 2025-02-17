@@ -49,34 +49,30 @@ class _SignIn2ScreenState extends State<SignIn2Screen> {
     }),
   );
 
-  print('Response Status Code: ${response.statusCode}');
-  print('Response Body: ${response.body}');
+  
 
   if (response.statusCode == 201) {
     final Map<String, dynamic> responseData = jsonDecode(response.body);
-    print('Decoded Response Data: $responseData');
+    
 
     if (responseData.containsKey('id') && responseData.containsKey('name')) {
       
       int userId = responseData['id'];
-      print('User IDssssssssssssss: $userId');
       String userName = responseData['name'];
 
       // Store in Provider
       Provider.of<UserProvider>(context, listen: false).setUser(userName);
       Provider.of<UserProvider>(context, listen: false).setId(userId);
 
-      print('User ID: $userId');
-      print('User Name: $userName');
+     
 
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => BottomNavScreen()),
+        MaterialPageRoute(builder: (context) => const BottomNavScreen()),
       );
     } else {
-      print('Error: ID or Name missing in response');
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error: Unexpected response format')),
+        const SnackBar(content: Text('Error: Unexpected response format')),
       );
     }
   } else {

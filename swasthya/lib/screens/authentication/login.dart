@@ -35,20 +35,19 @@ class _LoginScreenState extends State<LoginScreen> {
     }),
   );
 
-  print("Response Status: ${response.statusCode}");
-  print("Response Body: ${response.body}");
+ 
 
   if (response.statusCode == 200) {
     final data = jsonDecode(response.body);
     
-    print("Login Successful: $data");
+    
 
     Provider.of<UserProvider>(context, listen: false).setUser(data['name']);
     Provider.of<UserProvider>(context, listen: false).setId(data['user_id']);
 
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => BottomNavScreen()),
+      MaterialPageRoute(builder: (context) => const BottomNavScreen()),
     );
   } else {
     setState(() {

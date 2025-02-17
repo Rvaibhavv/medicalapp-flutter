@@ -101,11 +101,11 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
                     BoxShadow(
                       color: Colors.black.withOpacity(0.2),
                       blurRadius: 8,
-                      offset: Offset(0, 4),
+                      offset: const Offset(0, 4),
                     ),
                   ],
                 ),
-                child: Icon(
+                child: const Icon(
                   Icons.add,
                   size: 40,
                   color: MyColors.maincolor,

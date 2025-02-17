@@ -7,10 +7,10 @@ class PrivacyPolicyPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white ,
       appBar: AppBar(
-        title: Text("🔒 Privacy Policy"),
+        title: const Text("🔒 Privacy Policy"),
       ),
       body: Padding(
-        padding: EdgeInsets.all(16.0),
+        padding:const  EdgeInsets.all(16.0),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -89,7 +89,7 @@ class PrivacyPolicyPage extends StatelessWidget {
                     Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => Choose(),
+                        builder: (context) => const Choose(),
                       ), // Your home screen widget
                     );
                   },

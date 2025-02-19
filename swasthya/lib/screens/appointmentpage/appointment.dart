@@ -33,7 +33,10 @@ class _AppointmentPageState extends State<AppointmentPage> {
           isScrollControlled: true,
           backgroundColor: Colors.transparent,
           builder: (BuildContext context) {
-            return const Timepicker();
+            return  Timepicker(
+              doctorId: doctorid,
+              selectedDate: pickedDate,
+            );
           },
         );
 
@@ -87,7 +90,10 @@ class _AppointmentPageState extends State<AppointmentPage> {
         isScrollControlled: true,
         backgroundColor: Colors.transparent,
         builder: (BuildContext context) {
-          return const Timepicker();
+          return  Timepicker(
+             doctorId: doctorid,
+              selectedDate: DateTime.now(),
+          );
         },
       );
 
@@ -374,7 +380,6 @@ class _AppointmentPageState extends State<AppointmentPage> {
                                               doctor: doctor);
                                         },
                                       );
-                                      print("Info button clicked");
                                     },
                                     borderRadius: BorderRadius.circular(25),
                                     splashColor: Colors.white.withOpacity(0.3),

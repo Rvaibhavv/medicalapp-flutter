@@ -7,6 +7,11 @@ from rest_framework import status
 from .models import Appointment, UserProfile, Doctor
 from django.http import JsonResponse
 from datetime import date
+from .models import Appointment
+import json
+from django.views.decorators.csrf import csrf_exempt
+from datetime import datetime
+
 
 
 class DoctorViewSet(viewsets.ModelViewSet):
@@ -73,3 +78,33 @@ def get_upcoming_appointments(request):
     ]
 
     return JsonResponse(appointment_list, safe=False)
+
+
+
+
+@csrf_exempt
+def get_booked_slots(request):
+    if request.method != "POST":
+        return JsonResponse({'error': 'Invalid request method'}, status=405)
+
+    try:
+        data = json.loads(request.body)  # Read JSON body
+        doctor_id = data.get('doctor_id')
+        date_str = data.get('date')  # Example: "2025-02-19"
+
+        if not doctor_id or not date_str:
+            return JsonResponse({'error': 'Missing parameters'}, status=400)
+
+        # Convert string date to Python date object
+        appointment_date = datetime.strptime(date_str, "%Y-%m-%d").date()
+
+        # Fetch booked slots from the database using date object
+        booked_slots = list(Appointment.objects.filter(doctor_id=doctor_id, appointment_date=appointment_date)
+                            .values_list('appointment_time', flat=True))
+
+        return JsonResponse({'booked_slots': booked_slots})
+
+    except json.JSONDecodeError:
+        return JsonResponse({'error': 'Invalid JSON'}, status=400)
+    except ValueError:
+        return JsonResponse({'error': 'Invalid date format, expected YYYY-MM-DD'}, status=400)

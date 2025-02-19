@@ -1,16 +1,71 @@
 import 'package:flutter/material.dart';
 import '../mycolors.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+import '../../config.dart';
+import 'package:intl/intl.dart';
+
 class Timepicker extends StatefulWidget {
-  const Timepicker({super.key});
+  final int doctorId; // Doctor ID
+  final DateTime selectedDate;
+
+  const Timepicker({
+    super.key,
+    required this.doctorId,
+    required this.selectedDate,
+  });
 
   @override
   State<Timepicker> createState() => _TimepickerState();
 }
 
 class _TimepickerState extends State<Timepicker> {
-  final  ContainerColor = MyColors.maincolor; // Define the border color
+  final ContainerColor = MyColors.maincolor; // Define the border color
   int? selectedIndex; // State to keep track of the selected container
-  String? selectedTime; // Variable to store the selected tim
+  String? selectedTime; // Variable to store the selected time
+  List<String> bookedSlots = [];
+
+  @override
+  void initState() {
+    super.initState();
+    // Print the doctor ID and selected date
+    print('Doctor IDdd: ${widget.doctorId}');
+    print('Selected Date: ${widget.selectedDate}');
+    fetchBookedSlots();
+
+  }
+   Future<void> fetchBookedSlots() async {
+  final formattedDate = DateFormat('yyyy-MM-dd').format(widget.selectedDate);
+  final url = Uri.parse('${AppConfig.baseUrl}/docAppoint/booked-slots/');
+
+  try {
+    final response = await http.post(
+      url,
+      headers: {"Content-Type": "application/json"},
+      body: jsonEncode({
+        "doctor_id": widget.doctorId,
+        "date": formattedDate
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      setState(() {
+        bookedSlots = List<String>.from(data['booked_slots']);
+        print("Booked slots: $bookedSlots");
+      });
+    } else {
+      print("Error fetching booked slots: ${response.body}");
+    }
+  } catch (e) {
+    print("Exception: $e");
+  }
+}
+
+
+  bool isSlotBooked(String time) {
+    return bookedSlots.contains(time);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -18,8 +73,7 @@ class _TimepickerState extends State<Timepicker> {
       height: MediaQuery.of(context).size.height * 0.5,
       padding: const EdgeInsets.all(20), // Add padding inside the container
       decoration: const BoxDecoration(
-        color:
-            Colors.white, // Set the background color of the container to white
+        color: Colors.white, // Set the background color of the container to white
         borderRadius: BorderRadius.vertical(top: Radius.circular(25)),
       ),
       child: Column(
@@ -79,7 +133,6 @@ class _TimepickerState extends State<Timepicker> {
                   }
 
                   // Navigate to Paymentgateway after popping
-                  
                 },
                 color: ContainerColor,
                 shape: RoundedRectangleBorder(
@@ -104,31 +157,41 @@ class _TimepickerState extends State<Timepicker> {
   }
 
   Widget buildContainer(int index, String text) {
-    bool isSelected = selectedIndex == index;
-    return GestureDetector(
-      onTap: () {
-        setState(() {
-          selectedIndex = index;
-          selectedTime = text; // Store the selected time
-        });
-      },
-      child: Container(
-        width: 100,
-        height: 55,
-        margin: const EdgeInsets.only(right: 14), // Spacing between boxes
-        decoration: BoxDecoration(
-          color: isSelected ? ContainerColor : Colors.white,
-          borderRadius: BorderRadius.circular(10),
-          border:
-              Border.all(color: ContainerColor, width: 2), // Set border color
-        ),
-        child: Center(
-          child: Text(
-            text,
-            style: TextStyle(color: isSelected ? Colors.white : ContainerColor),
+  bool isSelected = selectedIndex == index;
+  bool isBooked = isSlotBooked(text);
+
+  return GestureDetector(
+    onTap: isBooked
+        ? null // Disable tapping on booked slots
+        : () {
+            setState(() {
+              selectedIndex = index;
+              selectedTime = text;
+            });
+          },
+    child: Container(
+      width: 100,
+      height: 55,
+      margin: const EdgeInsets.only(right: 14),
+      decoration: BoxDecoration(
+        color: isBooked
+            ? Colors.grey[400] // Grey out booked slots
+            : (isSelected ? ContainerColor : Colors.white),
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: isBooked ? Colors.grey : ContainerColor, width: 2),
+      ),
+      child: Center(
+        child: Text(
+          text,
+          style: TextStyle(
+            color: isBooked
+                ? Colors.black38 // Dark grey for booked slots
+                : (isSelected ? Colors.white : ContainerColor),
           ),
         ),
       ),
-    );
-  }
+    ),
+  );
+}
+
 }

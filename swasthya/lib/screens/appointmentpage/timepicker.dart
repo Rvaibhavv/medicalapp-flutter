@@ -175,17 +175,17 @@ class _TimepickerState extends State<Timepicker> {
       margin: const EdgeInsets.only(right: 14),
       decoration: BoxDecoration(
         color: isBooked
-            ? Colors.grey[400] // Grey out booked slots
+            ? const Color.fromARGB(255, 241, 190, 164) // Grey out booked slots
             : (isSelected ? ContainerColor : Colors.white),
         borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: isBooked ? Colors.grey : ContainerColor, width: 2),
+        border: Border.all(color: isBooked ? MyColors.mutedSunsetOrange : ContainerColor, width: 2),
       ),
       child: Center(
         child: Text(
           text,
           style: TextStyle(
             color: isBooked
-                ? Colors.black38 // Dark grey for booked slots
+                ? MyColors.darkSunsetOrange // Dark grey for booked slots
                 : (isSelected ? Colors.white : ContainerColor),
           ),
         ),

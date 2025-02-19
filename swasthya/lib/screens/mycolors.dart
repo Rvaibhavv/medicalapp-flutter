@@ -23,6 +23,8 @@ class MyColors {
 
   // Contrasting Pop Colors
   static const Color mutedSunsetOrange = Color(0xFFE88E58);
+  static const Color darkSunsetOrange = Color(0xFFD87240);
+  static const Color vibrantSunsetOrange = Color(0xFFFF5A09);
   static const Color goldenAmber = Color(0xFFFFB347);
   static const Color deepRubyRed = Color(0xFFA8333A);
   static const Color vibrantRoyalBlue = Color(0xFF4169E1);

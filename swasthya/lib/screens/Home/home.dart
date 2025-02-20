@@ -254,15 +254,18 @@ class HomePage extends StatelessWidget {
                             itemCount: userAppointments.length,
                             itemBuilder: (context, index) {
                               final appointment = userAppointments[index];
-                              return Card(
-                                color: Colors.white,
-                                margin: const EdgeInsets.symmetric(vertical: 6),
-                                child: ListTile(
-                                  leading: const Icon(Icons.calendar_today,
-                                      color: MyColors.deepTealGreen),
-                                  title: Text(appointment.doctorName),
-                                  subtitle: Text(
-                                      '${appointment.date} at ${appointment.time}'),
+                              return Container(
+                                child: Card(
+                                  
+                                  color: Colors.white,
+                                  margin: const EdgeInsets.symmetric(vertical: 6),
+                                  child: ListTile(
+                                    leading: const Icon(Icons.calendar_today,
+                                        color: MyColors.deepTealGreen),
+                                    title: Text(appointment.doctorName),
+                                    subtitle: Text(
+                                        '${appointment.date} at ${appointment.time}'),
+                                  ),
                                 ),
                               );
                             },

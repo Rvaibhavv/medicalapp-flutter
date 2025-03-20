@@ -14,9 +14,12 @@ class OtpScreen extends StatefulWidget {
 
 class _OtpScreenState extends State<OtpScreen> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  final TextEditingController _otpController = TextEditingController();
+  final List<TextEditingController> _otpControllers =
+      List.generate(6, (index) => TextEditingController());
+  final List<FocusNode> _focusNodes = List.generate(6, (index) => FocusNode());
   String _verificationId = "";
   bool _isLoading = false;
+  bool _otpSent = false;
 
   @override
   void initState() {
@@ -25,7 +28,10 @@ class _OtpScreenState extends State<OtpScreen> {
   }
 
   void _sendOtp() async {
-    setState(() => _isLoading = true);
+    setState(() {
+      _isLoading = true;
+      _otpSent = false;
+    });
 
     await _auth.verifyPhoneNumber(
       phoneNumber: widget.phoneNumber,
@@ -44,6 +50,7 @@ class _OtpScreenState extends State<OtpScreen> {
         setState(() {
           _verificationId = verificationId;
           _isLoading = false;
+          _otpSent = true;
         });
       },
       codeAutoRetrievalTimeout: (String verificationId) {
@@ -56,9 +63,19 @@ class _OtpScreenState extends State<OtpScreen> {
     setState(() => _isLoading = true);
 
     try {
+      String otpCode =
+          _otpControllers.map((controller) => controller.text).join();
+      if (otpCode.length != 6) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Enter a 6-digit OTP!")),
+        );
+        setState(() => _isLoading = false);
+        return;
+      }
+
       PhoneAuthCredential credential = PhoneAuthProvider.credential(
         verificationId: _verificationId,
-        smsCode: _otpController.text.trim(),
+        smsCode: otpCode,
       );
 
       await _auth.signInWithCredential(credential);
@@ -82,63 +99,152 @@ class _OtpScreenState extends State<OtpScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-  backgroundColor: MyColors.maincolor, // Background color for entire screen
-  body: SafeArea(
-    child: Column(
-      children: [
-        /// Top Section (2/9 ratio)
-        Expanded(
-          flex: 2,
-          child: Container(
-            alignment: Alignment.center,
-            color: MyColors.maincolor, // Change this to your desired color
-            child: Text(
-              "Verify OTP",
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
+      backgroundColor: Colors.white,
+      body: SafeArea(
+        child: Column(
+          children: [
+            /// Top Section (2/9 ratio)
+
+            /// Bottom Section (7/9 ratio) with Background Color
+            Expanded(
+              flex: 7,
+              child: Container(
                 color: Colors.white,
+                padding: const EdgeInsets.all(16.0),
+                child: SingleChildScrollView(
+                  // Wrap in ScrollView to prevent overflow
+                  child: Column(
+                    crossAxisAlignment:
+                        CrossAxisAlignment.center, // Center content
+                    children: [
+                      /// Image at the Top
+                      Image.asset(
+                        'assets/images/otp.png',
+                        width: 350, // Adjust width to avoid overflow
+                        height: 350, // Adjust height to avoid overflow
+                        fit: BoxFit.contain,
+                      ),
+
+                      const SizedBox(height: 15), // Space after image
+
+                      /// First Text Below Image
+                      const Text(
+                        "Enter the OTP sent to your mobile number",
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.bold),
+                        textAlign: TextAlign.center,
+                      ),
+
+                      const SizedBox(height: 5), // Space between texts
+
+                      /// Second Text Below First
+                      const Text(
+                        "Please enter the 6-digit code to verify",
+                        style: TextStyle(fontSize: 14, color: Colors.grey),
+                        textAlign: TextAlign.center,
+                      ),
+
+                      const SizedBox(height: 20), // Space before OTP fields
+
+                      /// OTP Input Fields (Now Flexible)
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: List.generate(6, (index) {
+                          return SizedBox(
+                            width: 45,
+                            height: 50,
+                            child: TextField(
+                              controller: _otpControllers[index],
+                              focusNode: _focusNodes[index],
+                              keyboardType: TextInputType.number,
+                              maxLength: 1,
+                              textAlign: TextAlign.center,
+                              
+                              style: const TextStyle(
+                                  fontSize: 20, fontWeight: FontWeight.bold),
+                              decoration: InputDecoration(
+                                counterText: "",
+                                filled: true ,
+                                contentPadding: EdgeInsets.zero,
+                                fillColor: const Color.fromARGB(255, 237, 249, 249),
+                                enabledBorder: const OutlineInputBorder(
+                                  borderSide: BorderSide(color: const Color.fromARGB(255, 237, 249, 249)),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(12)),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide:
+                                      BorderSide(color: MyColors.maincolor),
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(12)),
+                                ),
+                              ),
+                              onChanged: (value) {
+                                if (value.isNotEmpty && index < 5) {
+                                  _focusNodes[index].unfocus();
+                                  FocusScope.of(context)
+                                      .requestFocus(_focusNodes[index + 1]);
+                                } else if (value.isEmpty && index > 0) {
+                                  _focusNodes[index].unfocus();
+                                  FocusScope.of(context)
+                                      .requestFocus(_focusNodes[index - 1]);
+                                }
+                              },
+                            ),
+                          );
+                        }),
+                      ),
+
+                      const SizedBox(height: 25), // Space before button
+
+                      /// Verify Button (Always visible)
+                      ElevatedButton(
+                        onPressed: _verifyOtp,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: MyColors.maincolor,
+                          minimumSize: const Size(300, 50),
+                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                        child: const Text(
+                          "Verify",
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+
+                      const SizedBox(height: 10), // Space below button
+
+                      /// OTP Status Message (Instead of replacing the button)
+                      _isLoading
+                          ? const Text(
+                              "Sending OTP...",
+                              style:
+                                  TextStyle(fontSize: 16, color: Colors.grey),
+                            )
+                          : _otpSent
+                              ? const Text(
+                                  "OTP Sent!",
+                                  style: TextStyle(
+                                      fontSize: 16, color: Colors.green),
+                                )
+                              : const SizedBox(), // Empty space if nothing to show
+
+                      const SizedBox(
+                          height: 20), // Add extra space at the bottom
+                    ],
+                  ),
+                ),
               ),
             ),
-          ),
+          ],
         ),
-
-        /// Bottom Section (7/9 ratio) with Background Color
-        Expanded(
-          flex: 7,
-          child: Container(
-            decoration: const BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                      topRight: Radius.circular(50),
-                      topLeft: Radius.circular(50),
-                    ),
-                  ),
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text("Enter OTP sent to ${widget.phoneNumber}"),
-                TextField(
-                  controller: _otpController,
-                  keyboardType: TextInputType.number,
-                  decoration: const InputDecoration(labelText: "OTP"),
-                ),
-                const SizedBox(height: 20),
-                _isLoading
-                    ? const CircularProgressIndicator()
-                    : ElevatedButton(
-                        onPressed: _verifyOtp,
-                        child: const Text("Verify OTP"),
-                      ),
-              ],
-            ),
-          ),
-        ),
-      ],
-    ),
-  ),
-);
-
+      ),
+    );
   }
 }

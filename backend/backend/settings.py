@@ -31,6 +31,7 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
+    'pharmacy',
     'accounts',
     'rest_framework',
     'channels',

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'authentication/choose.dart';
 import 'mycolors.dart';
+import 'bottomnav.dart';
 class Splash extends StatelessWidget {
   const Splash({super.key});
 

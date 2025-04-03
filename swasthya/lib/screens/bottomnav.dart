@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'Home/home.dart';
-import 'Profile.dart';
+import 'virtualdoctor.dart';
 import 'settings.dart';
 import 'appointmentpage/appointment.dart';
 import 'mycolors.dart';
@@ -29,7 +29,7 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
     HomePage(),
     PharmacyPage(),
     AppointmentPage(),
-    ProfilePage(),
+    VirtualDoctor(),
     SettingsPage(),
   ];
 
@@ -83,7 +83,7 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
             showUnselectedLabels: true,
           ),
           Positioned(
-            bottom: 25,
+            bottom: 3,
             left: MediaQuery.of(context).size.width / 2 - 35,
             child: GestureDetector(
               onTap: () => _changePage(2),

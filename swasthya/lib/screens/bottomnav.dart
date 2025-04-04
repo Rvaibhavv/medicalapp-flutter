@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'Home/home.dart';
 import 'virtualdoctor.dart';
-import 'settings.dart';
+import 'ambulance.dart';
 import 'appointmentpage/appointment.dart';
 import 'mycolors.dart';
 import 'pharmacy/pharmacy.dart';
@@ -30,7 +30,7 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
     PharmacyPage(),
     AppointmentPage(),
     VirtualDoctor(),
-    SettingsPage(),
+    AmbulancePage(),
   ];
 
   void _changePage(int index) {

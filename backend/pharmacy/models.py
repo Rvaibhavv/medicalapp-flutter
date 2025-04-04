@@ -10,3 +10,16 @@ class Medicine(models.Model):
 
     def __str__(self):
         return f"{self.name} - ₹{self.price}"
+
+
+class CartItem(models.Model):
+    user_id = models.IntegerField()
+    medicine = models.ForeignKey(Medicine, on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField(default=1)
+    added_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        db_table = 'cart_item'
+
+    def __str__(self):
+        return f"User {self.user_id} - {self.medicine.name} x {self.quantity}"

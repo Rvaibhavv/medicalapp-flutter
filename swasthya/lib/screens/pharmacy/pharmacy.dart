@@ -1,8 +1,11 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 import '../../config.dart';
+import '../../user_provider.dart';
 import 'package:swasthya/screens/mycolors.dart';
+import 'cart.dart';
 
 class PharmacyPage extends StatefulWidget {
   const PharmacyPage({super.key});
@@ -14,7 +17,8 @@ class PharmacyPage extends StatefulWidget {
 class _PharmacyPageState extends State<PharmacyPage> {
   List<dynamic> _allMedicines = [];
   List<dynamic> _filteredMedicines = [];
-  TextEditingController _searchController = TextEditingController();
+  final TextEditingController _searchController = TextEditingController();
+  final Map<int, int> _quantities = {}; // medicineId -> quantity
 
   @override
   void initState() {
@@ -23,13 +27,17 @@ class _PharmacyPageState extends State<PharmacyPage> {
   }
 
   Future<void> fetchMedicines() async {
-    final response = await http.get(Uri.parse('${AppConfig.baseUrl}/pharmacy/medicines/'));
+    final response =
+        await http.get(Uri.parse('${AppConfig.baseUrl}/pharmacy/medicines/'));
 
     if (response.statusCode == 200) {
       List<dynamic> medicines = jsonDecode(response.body);
       setState(() {
         _allMedicines = medicines;
-        _filteredMedicines = medicines; // Initially display all medicines
+        _filteredMedicines = medicines;
+        for (var med in medicines) {
+          _quantities[med["id"]] = 1; // default quantity = 1
+        }
       });
     } else {
       throw Exception('Failed to load medicines');
@@ -38,7 +46,8 @@ class _PharmacyPageState extends State<PharmacyPage> {
 
   void _searchMedicine(String query) {
     List<dynamic> filteredList = _allMedicines
-        .where((medicine) => medicine["name"].toLowerCase().contains(query.toLowerCase()))
+        .where((medicine) =>
+            medicine["name"].toLowerCase().contains(query.toLowerCase()))
         .toList();
 
     setState(() {
@@ -53,10 +62,7 @@ class _PharmacyPageState extends State<PharmacyPage> {
       body: SafeArea(
         child: Column(
           children: [
-            // Header Section with Search Bar
             _buildHeader(),
-
-            // Medicine Cards Section
             Expanded(
               child: Container(
                 decoration: const BoxDecoration(
@@ -69,8 +75,6 @@ class _PharmacyPageState extends State<PharmacyPage> {
                 child: Column(
                   children: [
                     const SizedBox(height: 20),
-
-                    // Rounded Grey Line
                     Container(
                       width: 100,
                       height: 6,
@@ -79,15 +83,14 @@ class _PharmacyPageState extends State<PharmacyPage> {
                         borderRadius: BorderRadius.circular(10),
                       ),
                     ),
-
                     const SizedBox(height: 15),
-
                     Expanded(
                       child: _filteredMedicines.isEmpty
                           ? const Center(child: Text("No medicines found"))
                           : GridView.builder(
                               physics: const BouncingScrollPhysics(),
-                              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                              gridDelegate:
+                                  const SliverGridDelegateWithFixedCrossAxisCount(
                                 crossAxisCount: 2,
                                 crossAxisSpacing: 12,
                                 mainAxisSpacing: 12,
@@ -95,7 +98,8 @@ class _PharmacyPageState extends State<PharmacyPage> {
                               ),
                               itemCount: _filteredMedicines.length,
                               itemBuilder: (context, index) {
-                                return buildMedicineCard(_filteredMedicines[index]);
+                                return buildMedicineCard(
+                                    context, _filteredMedicines[index]);
                               },
                             ),
                     ),
@@ -109,7 +113,6 @@ class _PharmacyPageState extends State<PharmacyPage> {
     );
   }
 
-  // Header Section (Search Bar & Icons)
   Widget _buildHeader() {
     return Container(
       height: MediaQuery.of(context).size.height * 0.3,
@@ -135,7 +138,12 @@ class _PharmacyPageState extends State<PharmacyPage> {
                 ),
               ),
               IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => CartPage()),
+                  );
+                },
                 icon: const CircleAvatar(
                   backgroundColor: Colors.white,
                   radius: 23,
@@ -149,8 +157,6 @@ class _PharmacyPageState extends State<PharmacyPage> {
             ],
           ),
           const SizedBox(height: 12),
-
-          // Search Bar
           SizedBox(
             height: 55,
             child: TextField(
@@ -176,8 +182,12 @@ class _PharmacyPageState extends State<PharmacyPage> {
     );
   }
 
-  // Medicine Card Widget
-  Widget buildMedicineCard(Map<String, dynamic> medicine) {
+  Widget buildMedicineCard(
+      BuildContext context, Map<String, dynamic> medicine) {
+    final int userId = Provider.of<UserProvider>(context, listen: false).userId;
+    final int medicineId = medicine["id"];
+    int quantity = _quantities[medicineId] ?? 1;
+
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -199,20 +209,20 @@ class _PharmacyPageState extends State<PharmacyPage> {
             child: Stack(
               children: [
                 ClipRRect(
-                  borderRadius: const BorderRadius.vertical(top: Radius.circular(15)),
+                  borderRadius:
+                      const BorderRadius.vertical(top: Radius.circular(15)),
                   child: Image.asset(
                     "assets/images/med.webp",
                     width: double.infinity,
                     fit: BoxFit.cover,
                   ),
                 ),
-
-                // ID Badge (Top Left)
                 Positioned(
                   top: 10,
                   left: 10,
                   child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(10),
@@ -226,12 +236,11 @@ class _PharmacyPageState extends State<PharmacyPage> {
                     ),
                     child: Text(
                       "ID: ${medicine["id"]}",
-                      style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                      style: const TextStyle(
+                          fontSize: 12, fontWeight: FontWeight.bold),
                     ),
                   ),
                 ),
-
-                // Favorite Icon (Top Right)
                 const Positioned(
                   top: 10,
                   right: 10,
@@ -245,32 +254,92 @@ class _PharmacyPageState extends State<PharmacyPage> {
             ),
           ),
 
-          // Medicine Info (Name & Price)
+          // Medicine Info
           Padding(
             padding: const EdgeInsets.all(10),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Name & Cart Button
+                // Name
+                Text(
+                  medicine["name"],
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                  ),
+                  overflow: TextOverflow.ellipsis,
+                ),
+                const SizedBox(height: 4),
+
+                Text(
+                  "₹${medicine["price"]}",
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: MyColors.deepTealGreen,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 6),
+
+                // Quantity selector
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Expanded(
-                      child: Text(
-                        medicine["name"],
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                        ),
-                        overflow: TextOverflow.ellipsis,
-                      ),
+                    IconButton(
+                      icon: const Icon(Icons.remove),
+                      onPressed: () {
+                        if (quantity > 1) {
+                          setState(() {
+                            _quantities[medicineId] = quantity - 1;
+                          });
+                        }
+                      },
                     ),
+                    Text(
+                      '$quantity',
+                      style: const TextStyle(fontSize: 16),
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.add),
+                      onPressed: () {
+                        setState(() {
+                          _quantities[medicineId] = quantity + 1;
+                        });
+                      },
+                    ),
+                    const Spacer(),
+
+                    // Add to cart button
                     MaterialButton(
                       padding: EdgeInsets.zero,
                       minWidth: 0,
-                      onPressed: () {
-                        print("Added ${medicine["name"]} to cart!");
+                      onPressed: () async {
+                        final response = await http.post(
+                          Uri.parse('${AppConfig.baseUrl}/pharmacy/add-to-cart/'),
+                          headers: {"Content-Type": "application/json"},
+                          body: jsonEncode({
+                            "user_id": userId,
+                            "medicine": medicineId,
+                            "quantity": quantity,
+                          }),
+                        );
+
+                        if (response.statusCode == 201 || response.statusCode == 200) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text("Added to cart"),
+                              duration: Duration(seconds: 1),
+                            ),
+                          );
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                  "Failed: ${response.statusCode}"),
+                              duration: const Duration(seconds: 1),
+                            ),
+                          );
+                        }
                       },
                       child: const CircleAvatar(
                         backgroundColor: Colors.white,
@@ -283,17 +352,6 @@ class _PharmacyPageState extends State<PharmacyPage> {
                       ),
                     ),
                   ],
-                ),
-                const SizedBox(height: 4),
-
-                // Medicine Price
-                Text(
-                  "₹${medicine["price"]}",
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: MyColors.deepTealGreen,
-                    fontWeight: FontWeight.bold,
-                  ),
                 ),
               ],
             ),

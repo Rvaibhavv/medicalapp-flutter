@@ -6,7 +6,7 @@ import 'package:swasthya/screens/mycolors.dart';
 class OtpScreen extends StatefulWidget {
   final String phoneNumber;
 
-  const OtpScreen({Key? key, required this.phoneNumber}) : super(key: key);
+  const OtpScreen({super.key, required this.phoneNumber});
 
   @override
   _OtpScreenState createState() => _OtpScreenState();
@@ -162,20 +162,20 @@ class _OtpScreenState extends State<OtpScreen> {
                               
                               style: const TextStyle(
                                   fontSize: 20, fontWeight: FontWeight.bold),
-                              decoration: InputDecoration(
+                              decoration: const InputDecoration(
                                 counterText: "",
                                 filled: true ,
                                 contentPadding: EdgeInsets.zero,
-                                fillColor: const Color.fromARGB(255, 237, 249, 249),
-                                enabledBorder: const OutlineInputBorder(
-                                  borderSide: BorderSide(color: const Color.fromARGB(255, 237, 249, 249)),
+                                fillColor: Color.fromARGB(255, 237, 249, 249),
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(color: Color.fromARGB(255, 237, 249, 249)),
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(12)),
                                 ),
                                 focusedBorder: OutlineInputBorder(
                                   borderSide:
                                       BorderSide(color: MyColors.maincolor),
-                                  borderRadius: const BorderRadius.all(
+                                  borderRadius: BorderRadius.all(
                                       Radius.circular(12)),
                                 ),
                               ),

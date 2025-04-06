@@ -42,3 +42,18 @@ class RemoveCartItemView(APIView):
             return Response(status=status.HTTP_204_NO_CONTENT)
         except CartItem.DoesNotExist:
             return Response({"error": "Item not found"}, status=status.HTTP_404_NOT_FOUND)
+        
+
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework import status
+from .models import CartItem
+
+@api_view(['DELETE'])
+def clear_cart(request):
+    user_id = request.GET.get('user_id')
+    if not user_id:
+        return Response({'error': 'user_id required'}, status=status.HTTP_400_BAD_REQUEST)
+
+    CartItem.objects.filter(user_id=user_id).delete()
+    return Response(status=status.HTTP_204_NO_CONTENT)

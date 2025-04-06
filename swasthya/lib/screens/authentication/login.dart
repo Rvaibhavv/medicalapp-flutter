@@ -47,7 +47,7 @@ class _LoginScreenState extends State<LoginScreen> {
     print("Phone: $phone");
 
     // Delay navigation to avoid context disposal issues
-    Future.delayed(Duration(milliseconds: 500), () {
+    Future.delayed(const Duration(milliseconds: 500), () {
       if (mounted) {
         Navigator.pushReplacement(
           context,

@@ -5,13 +5,15 @@ import 'package:swasthya/config.dart';
 import 'mycolors.dart'; // Import MyColors
 
 class VirtualDoctor extends StatefulWidget {
+  const VirtualDoctor({super.key});
+
   @override
   _VirtualDoctorState createState() => _VirtualDoctorState();
 }
 
 class _VirtualDoctorState extends State<VirtualDoctor> {
   final TextEditingController _controller = TextEditingController();
-  List<Map<String, String>> _messages = [];
+  final List<Map<String, String>> _messages = [];
   final String apiKey = AppConfig.Apigemini; // Replace with your actual API Key
 
   Future<void> sendMessage(String message) async {
@@ -61,7 +63,7 @@ class _VirtualDoctorState extends State<VirtualDoctor> {
   void _simulateTypingEffect(String fullReply) async {
     String displayedText = "";
     for (String word in fullReply.split(" ")) {
-      displayedText += word + " ";
+      displayedText += "$word ";
       setState(() {
         if (_messages.isNotEmpty && _messages.last["role"] == "bot") {
           _messages.last["text"] = displayedText;
@@ -69,18 +71,20 @@ class _VirtualDoctorState extends State<VirtualDoctor> {
           _messages.add({"role": "bot", "text": displayedText});
         }
       });
-      await Future.delayed(Duration(milliseconds: 50)); // Adjust speed if needed
+      await Future.delayed(const Duration(milliseconds: 50)); // Adjust speed if needed
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFF8F8F8), // Light background for contrast
+      backgroundColor: const Color(0xFFF8F8F8), // Light background for contrast
       appBar: AppBar(
         backgroundColor: MyColors.maincolor,
         elevation: 0,
-        title: Row(
+        automaticallyImplyLeading: false,
+
+        title: const Row(
           children: [
             Icon(Icons.medical_services, color: Colors.white), // AI Icon
             SizedBox(width: 10),
@@ -93,7 +97,7 @@ class _VirtualDoctorState extends State<VirtualDoctor> {
           Expanded(
             child: ListView.builder(
               itemCount: _messages.length,
-              padding: EdgeInsets.symmetric(horizontal: 8),
+              padding: const EdgeInsets.symmetric(horizontal: 8),
               itemBuilder: (context, index) {
                 final msg = _messages[index];
                 bool isUser = msg["role"] == "user";
@@ -103,27 +107,27 @@ class _VirtualDoctorState extends State<VirtualDoctor> {
                     constraints: BoxConstraints(
                       maxWidth: MediaQuery.of(context).size.width * 0.7, // Messages won't touch opposite side
                     ),
-                    padding: EdgeInsets.all(12),
-                    margin: EdgeInsets.symmetric(vertical: 4),
+                    padding: const EdgeInsets.all(12),
+                    margin: const EdgeInsets.symmetric(vertical: 4),
                     decoration: BoxDecoration(
                       color: isUser ? MyColors.maincolor : MyColors.softTeal,
                       borderRadius: BorderRadius.only(
-                        topLeft: isUser ? Radius.circular(12) : Radius.zero,
-                        topRight: isUser ? Radius.zero : Radius.circular(12),
-                        bottomLeft: Radius.circular(12),
-                        bottomRight: Radius.circular(12),
+                        topLeft: isUser ? const Radius.circular(12) : Radius.zero,
+                        topRight: isUser ? Radius.zero : const Radius.circular(12),
+                        bottomLeft: const Radius.circular(12),
+                        bottomRight: const Radius.circular(12),
                       ),
                     ),
                     child: Text(
                       msg["text"]!,
-                      style: TextStyle(fontSize: 16, color: Colors.white),
+                      style: const TextStyle(fontSize: 16, color: Colors.white),
                     ),
                   ),
                 );
               },
             ),
           ),
-          SizedBox(height: 5), // Moves input box 5 pixels up
+          const SizedBox(height: 5), // Moves input box 5 pixels up
           Padding(
             padding: const EdgeInsets.only(left: 8, right: 8, bottom: 18),
             child: Row(
@@ -133,7 +137,7 @@ class _VirtualDoctorState extends State<VirtualDoctor> {
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(25),
-                      boxShadow: [
+                      boxShadow: const [
                         BoxShadow(
                           color: Colors.black12,
                           blurRadius: 4,
@@ -144,7 +148,7 @@ class _VirtualDoctorState extends State<VirtualDoctor> {
                     ),
                     child: TextField(
                       controller: _controller,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         hintText: "Ask a medical question...",
                         border: InputBorder.none,
                         contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 14),
@@ -152,7 +156,7 @@ class _VirtualDoctorState extends State<VirtualDoctor> {
                     ),
                   ),
                 ),
-                SizedBox(width: 8),
+                const SizedBox(width: 8),
                 ClipOval(
                   child: Material(
                     color: MyColors.maincolor,
@@ -163,7 +167,7 @@ class _VirtualDoctorState extends State<VirtualDoctor> {
                           _controller.clear();
                         }
                       },
-                      child: Padding(
+                      child: const Padding(
                         padding: EdgeInsets.all(12),
                         child: Icon(Icons.send, color: Colors.white),
                       ),

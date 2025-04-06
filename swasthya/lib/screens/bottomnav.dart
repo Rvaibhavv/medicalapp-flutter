@@ -9,7 +9,7 @@ import 'pharmacy/pharmacy.dart';
 class BottomNavScreen extends StatefulWidget {
   final int startIndex;
 
-  const BottomNavScreen({Key? key, this.startIndex = 0}) : super(key: key);
+  const BottomNavScreen({super.key, this.startIndex = 0});
 
   @override
   _BottomNavScreenState createState() => _BottomNavScreenState();
@@ -27,10 +27,10 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
 
   final List<Widget> _pages = [
     HomePage(),
-    PharmacyPage(),
-    AppointmentPage(),
+    const PharmacyPage(),
+    const AppointmentPage(),
     VirtualDoctor(),
-    AmbulancePage(),
+    const AmbulancePage(),
   ];
 
   void _changePage(int index) {

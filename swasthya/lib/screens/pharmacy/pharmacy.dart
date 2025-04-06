@@ -141,7 +141,7 @@ class _PharmacyPageState extends State<PharmacyPage> {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => CartPage()),
+                    MaterialPageRoute(builder: (context) => const CartPage()),
                   );
                 },
                 icon: const CircleAvatar(
@@ -274,7 +274,7 @@ class _PharmacyPageState extends State<PharmacyPage> {
 
                 Text(
                   "₹${medicine["price"]}",
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 14,
                     color: MyColors.deepTealGreen,
                     fontWeight: FontWeight.bold,

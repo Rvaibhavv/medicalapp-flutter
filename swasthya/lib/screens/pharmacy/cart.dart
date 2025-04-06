@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
+import 'package:razorpay_flutter/razorpay_flutter.dart';
 import '../../config.dart';
 import '../../user_provider.dart';
 import '../mycolors.dart';
@@ -15,11 +16,22 @@ class CartPage extends StatefulWidget {
 
 class _CartPageState extends State<CartPage> {
   List<dynamic> _cartItems = [];
+  late Razorpay _razorpay;
 
   @override
   void initState() {
     super.initState();
     fetchCartItems();
+    _razorpay = Razorpay();
+    _razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
+    _razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, _handlePaymentError);
+    _razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET, _handleExternalWallet);
+  }
+
+  @override
+  void dispose() {
+    _razorpay.clear();
+    super.dispose();
   }
 
   Future<void> fetchCartItems() async {
@@ -59,14 +71,76 @@ class _CartPageState extends State<CartPage> {
     return total;
   }
 
+  void _startPayment() {
+    final userId = Provider.of<UserProvider>(context, listen: false).userId;
+    double totalPrice = getTotalPrice();
+
+    var options = {
+      'key': AppConfig.razorpayKey,
+      'amount': (totalPrice * 100).toInt(),
+      'currency': 'INR',
+      'name': 'Your App Name',
+      'description': 'Medicine Purchase',
+      'prefill': {'contact': '1234567890', 'email': 'user@example.com'},
+      'external': {'wallets': ['paytm']},
+      'notes': {'userId': userId},
+    };
+
+    try {
+      _razorpay.open(options);
+    } catch (e) {
+      print("Error: $e");
+    }
+  }
+
+  void _handlePaymentSuccess(PaymentSuccessResponse response) async {
+    print("Payment Success: ${response.paymentId}");
+
+    final int userId = Provider.of<UserProvider>(context, listen: false).userId;
+
+    // Call backend to clear user's cart
+    final res = await http.delete(
+      Uri.parse('${AppConfig.baseUrl}/pharmacy/clear-cart/?user_id=$userId'),
+    );
+
+    if (res.statusCode == 204 || res.statusCode == 200) {
+      setState(() {
+        _cartItems.clear(); // Clear UI cart
+      });
+
+      
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Payment done, but failed to clear cart.")),
+      );
+    }
+  }
+
+  void _handlePaymentError(PaymentFailureResponse response) {
+    print("Payment Error: ${response.message}");
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text("Payment Failed")),
+    );
+  }
+
+  void _handleExternalWallet(ExternalWalletResponse response) {
+    print("External Wallet: ${response.walletName}");
+  }
+
   @override
   Widget build(BuildContext context) {
     double totalPrice = getTotalPrice();
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text("Cart"),
+        title: const Text(
+          "Checkout",
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        ),
         backgroundColor: MyColors.maincolor,
+        automaticallyImplyLeading: true,
+        iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: Column(
         children: [
@@ -108,17 +182,15 @@ class _CartPageState extends State<CartPage> {
                   ),
                   const SizedBox(height: 10),
                   ElevatedButton(
-                    onPressed: () {
-                      // checkout logic
-                    },
+                    onPressed: _startPayment,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: MyColors.deepTealGreen,
                       padding: const EdgeInsets.symmetric(vertical: 14),
                       minimumSize: const Size.fromHeight(50),
                     ),
                     child: const Text(
-                      "Proceed to Checkout",
-                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                      "Pay Now",
+                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
                     ),
                   ),
                 ],

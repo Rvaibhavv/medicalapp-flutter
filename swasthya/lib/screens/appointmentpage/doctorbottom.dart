@@ -4,7 +4,7 @@ import 'package:swasthya/screens/mycolors.dart';
 class DoctorInfoBottomSheet extends StatelessWidget {
   final dynamic doctor;
 
-  DoctorInfoBottomSheet({required this.doctor});
+  const DoctorInfoBottomSheet({super.key, required this.doctor});
 
   @override
   Widget build(BuildContext context) {

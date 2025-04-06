@@ -4,7 +4,7 @@ import 'mycolors.dart'; // Import the color palette
 class CustomNavBar extends StatelessWidget {
   final String title;  // Title to be passed to the custom navbar
 
-  CustomNavBar({required this.title});
+  const CustomNavBar({super.key, required this.title});
 
   @override
   Widget build(BuildContext context) {

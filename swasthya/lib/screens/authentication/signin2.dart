@@ -67,7 +67,7 @@ class _SignIn2ScreenState extends State<SignIn2Screen> {
         Provider.of<UserProvider>(context, listen: false).setPhone(phone);
 
         // Navigate to OTP Screen
-        Future.delayed(Duration(milliseconds: 500), () {
+        Future.delayed(const Duration(milliseconds: 500), () {
           if (mounted) {
             Navigator.pushReplacement(
               context,

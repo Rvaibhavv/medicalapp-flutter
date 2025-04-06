@@ -44,6 +44,8 @@ class Appointment {
 }
 
 class HomePage extends StatelessWidget {
+  const HomePage({super.key});
+
   @override
   Widget build(BuildContext context) {
     String username = Provider.of<UserProvider>(context).userName;
@@ -54,7 +56,7 @@ class HomePage extends StatelessWidget {
           children: [
             const Text('Welcome back,',
                 style: TextStyle(color: Colors.white, fontSize: 13)),
-            Text('$username',
+            Text(username,
                 style: const TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
@@ -118,7 +120,7 @@ class HomePage extends StatelessWidget {
                             PageRouteBuilder(
                               pageBuilder:
                                   (context, animation, secondaryAnimation) =>
-                                      BottomNavScreen(startIndex: 2),
+                                      const BottomNavScreen(startIndex: 2),
                               transitionDuration:
                                   Duration.zero, // No animation duration
                               reverseTransitionDuration:
@@ -131,8 +133,8 @@ class HomePage extends StatelessWidget {
                           borderRadius: BorderRadius.circular(10),
                         ),
                         padding:
-                            EdgeInsets.symmetric(vertical: 12, horizontal: 24),
-                        child: Text(
+                            const EdgeInsets.symmetric(vertical: 12, horizontal: 24),
+                        child: const Text(
                           "Let's Go",
                           style: TextStyle(
                             fontSize: 18,
@@ -160,7 +162,7 @@ class HomePage extends StatelessWidget {
                           PageRouteBuilder(
                             pageBuilder:
                                 (context, animation, secondaryAnimation) =>
-                                    BottomNavScreen(startIndex: 1),
+                                    const BottomNavScreen(startIndex: 1),
                             transitionDuration:
                                 Duration.zero, // No animation duration
                             reverseTransitionDuration:
@@ -178,7 +180,7 @@ class HomePage extends StatelessWidget {
                           PageRouteBuilder(
                             pageBuilder:
                                 (context, animation, secondaryAnimation) =>
-                                    BottomNavScreen(startIndex: 3),
+                                    const BottomNavScreen(startIndex: 3),
                             transitionDuration:
                                 Duration.zero, // No animation duration
                             reverseTransitionDuration:
@@ -196,7 +198,7 @@ class HomePage extends StatelessWidget {
                           PageRouteBuilder(
                             pageBuilder:
                                 (context, animation, secondaryAnimation) =>
-                                    BottomNavScreen(startIndex: 4),
+                                    const BottomNavScreen(startIndex: 4),
                             transitionDuration:
                                 Duration.zero, // No animation duration
                             reverseTransitionDuration:
@@ -232,12 +234,12 @@ class HomePage extends StatelessWidget {
                       .toList();
 
                   if (userAppointments.isEmpty) {
-                    return Center(child: Text('No upcoming appointments'));
+                    return const Center(child: Text('No upcoming appointments'));
                   }
 
                   return Container(
                     color: Colors.white,
-                    padding: EdgeInsets.all(12),
+                    padding: const EdgeInsets.all(12),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -291,7 +293,7 @@ class HomePage extends StatelessWidget {
           width: 100,
           height: 100,
         ),
-        Text(label, style: TextStyle(fontSize: 14)),
+        Text(label, style: const TextStyle(fontSize: 14)),
       ],
     );
   }

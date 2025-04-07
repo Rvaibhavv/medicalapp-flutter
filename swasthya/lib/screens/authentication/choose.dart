@@ -126,7 +126,7 @@ class _ChooseState extends State<Choose> {
                           context,
                           MaterialPageRoute(
                               builder: (context) =>
-                                  TermsPage()), // Your home screen widget
+                                  const TermsPage()), // Your home screen widget
                         );
                       },
                       child: const Text(
@@ -156,7 +156,7 @@ class _ChooseState extends State<Choose> {
                           context,
                           MaterialPageRoute(
                               builder: (context) =>
-                                  PrivacyPolicyPage()), // Your home screen widget
+                                  const PrivacyPolicyPage()), // Your home screen widget
                         );
                       },
                       child: const Text(

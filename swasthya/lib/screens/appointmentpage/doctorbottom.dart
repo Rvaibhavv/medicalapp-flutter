@@ -49,11 +49,7 @@ class DoctorInfoBottomSheet extends StatelessWidget {
             color: Colors.grey),
           ),
           const SizedBox(height: 20),
-          Text(
-            "Contact: ${doctor['contact']}",
-            style: const TextStyle(fontSize: 16,
-            color: Colors.grey),
-          ),
+          
         ],
       ),
     );

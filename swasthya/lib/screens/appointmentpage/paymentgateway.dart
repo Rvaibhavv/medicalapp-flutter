@@ -145,7 +145,7 @@ class _PaymentgatewayState extends State<Paymentgateway> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            CustomNavBar(title: "Payment"),
+            const CustomNavBar(title: "Payment"),
             const SizedBox(height: 10),
             // Booking Summary
             _buildSummarySection(formattedDate),

@@ -26,10 +26,10 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
   }
 
   final List<Widget> _pages = [
-    HomePage(),
+    const HomePage(),
     const PharmacyPage(),
     const AppointmentPage(),
-    VirtualDoctor(),
+    const VirtualDoctor(),
     const AmbulancePage(),
   ];
 
@@ -70,8 +70,8 @@ class _BottomNavScreenState extends State<BottomNavScreen> {
                 label: '',
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.medical_information_outlined),
-                label: 'Diagnostics',
+                icon: Icon(Icons.person_outline),
+                label: 'Virtual Doctor',
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.medical_services_outlined),

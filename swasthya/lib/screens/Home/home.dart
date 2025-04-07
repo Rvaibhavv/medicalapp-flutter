@@ -173,24 +173,7 @@ class HomePage extends StatelessWidget {
                       child: _buildIconTile(
                           'assets/images/pharmacy.png', 'Pharmacy'),
                     ),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.pushReplacement(
-                          context,
-                          PageRouteBuilder(
-                            pageBuilder:
-                                (context, animation, secondaryAnimation) =>
-                                    const BottomNavScreen(startIndex: 3),
-                            transitionDuration:
-                                Duration.zero, // No animation duration
-                            reverseTransitionDuration:
-                                Duration.zero, // No reverse animation
-                          ),
-                        );
-                      },
-                      child: _buildIconTile(
-                          'assets/images/diagnosis.png', 'Diagnosis'),
-                    ),
+                    
                     GestureDetector(
                       onTap: () {
                         Navigator.pushReplacement(
@@ -208,6 +191,24 @@ class HomePage extends StatelessWidget {
                       },
                       child: _buildIconTile(
                           'assets/images/ambulance.png', 'Ambulance'),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.pushReplacement(
+                          context,
+                          PageRouteBuilder(
+                            pageBuilder:
+                                (context, animation, secondaryAnimation) =>
+                                    const BottomNavScreen(startIndex: 3),
+                            transitionDuration:
+                                Duration.zero, // No animation duration
+                            reverseTransitionDuration:
+                                Duration.zero, // No reverse animation
+                          ),
+                        );
+                      },
+                      child: _buildIconTile(
+                          'assets/images/diagnosis.png', 'Virtual Doctor'),
                     ),
                   ],
                 ),

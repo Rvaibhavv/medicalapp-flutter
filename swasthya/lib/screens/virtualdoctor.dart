@@ -14,7 +14,7 @@ class VirtualDoctor extends StatefulWidget {
 class _VirtualDoctorState extends State<VirtualDoctor> {
   final TextEditingController _controller = TextEditingController();
   final List<Map<String, String>> _messages = [];
-  final String apiKey = AppConfig.Apigemini; // Replace with your actual API Key
+  final String apiKey = AppConfig.apigemini; // Replace with your actual API Key
 
   Future<void> sendMessage(String message) async {
     setState(() {
